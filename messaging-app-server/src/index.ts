@@ -4,6 +4,7 @@ import cors from "cors";
 import mongoose from "mongoose";
 import chatsRoutes from "./routes/chats";
 import usersRoutes from "./routes/users";
+import authRoutes from "./routes/auth";
 import { isHttpError } from "http-errors";
 
 dotenv.config();
@@ -20,6 +21,7 @@ db.on("error", console.error.bind(console, "mongo connection error"));
 
 app.use("/chats", chatsRoutes);
 app.use("/users", usersRoutes);
+app.use("/auth", authRoutes);
 
 app.use((error: unknown, req: Request, res: Response, next: NextFunction) => {
   console.error(error);
