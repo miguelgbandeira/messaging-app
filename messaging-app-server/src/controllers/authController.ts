@@ -26,11 +26,10 @@ export const login: RequestHandler = async (req, res, next) => {
     const existingUser = await UserModel.findOne({ username: username })
       .select("+password")
       .exec();
-    if (!existingUser) {
-      throw createHttpError(404, "User with that username doesn't exist");
-    } else if (existingUser.password === password) {
-      return res.status(200).json({ message: "user sucessfully logged in" });
+    if (!existingUser || existingUser.password !== password) {
+      throw createHttpError(400, "Incorrect credentials");
     }
+    return res.status(200).json({ message: "user successfully logged in" });
   } catch (error) {
     next(error);
   }

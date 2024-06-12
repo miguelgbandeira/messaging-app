@@ -10,11 +10,31 @@ function LoginPage() {
   const {
     register,
     handleSubmit,
+    setError,
     formState: { errors, isSubmitting },
   } = useForm<FormFields>();
 
   const onSubmit: SubmitHandler<FormFields> = async (data) => {
-    console.log(data);
+    try {
+      const response = await fetch("http://localhost:4000/auth/login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        console.log(errorData);
+        throw new Error(errorData.error || "An error occurred");
+      }
+
+      const result = await response.json();
+      console.log("Success:", result);
+    } catch (error) {
+      setError("root", { message: error.message });
+    }
   };
 
   return (
@@ -64,6 +84,9 @@ function LoginPage() {
               disabled={isSubmitting}
               label={isSubmitting ? "Loading..." : "Submit"}
             ></Button>
+            {errors.root && (
+              <div className="text-red-500">{errors.root.message}</div>
+            )}
           </div>
         </form>
       </div>
