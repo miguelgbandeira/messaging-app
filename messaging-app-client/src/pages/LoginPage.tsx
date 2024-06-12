@@ -85,7 +85,7 @@ function LoginPage() {
               label={isSubmitting ? "Loading..." : "Submit"}
             ></Button>
             {errors.root && (
-              <div className="text-red-500">{errors.root.message}</div>
+              <div className="text-red-500 mt-4">{errors.root.message}</div>
             )}
           </div>
         </form>
