@@ -10,7 +10,6 @@ const port = process.env.PORT;
 app.use(cors());
 app.use(express.urlencoded({ extended: false }));
 
-const mongoDb = process.env.MONGO_CONNECTION;
 mongoose.connect(process.env.MONGO_CONNECTION!);
 const db = mongoose.connection;
 db.on("error", console.error.bind(console, "mongo connection error"));
