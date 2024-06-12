@@ -1,5 +1,6 @@
 import Button from "../components/Button";
 import { SubmitHandler, useForm } from "react-hook-form";
+import { useNavigate } from "react-router-dom";
 
 type FormFields = {
   username: string;
@@ -13,6 +14,7 @@ function LoginPage() {
     setError,
     formState: { errors, isSubmitting },
   } = useForm<FormFields>();
+  const navigate = useNavigate();
 
   const onSubmit: SubmitHandler<FormFields> = async (data) => {
     try {
@@ -30,8 +32,7 @@ function LoginPage() {
         throw new Error(errorData.error || "An error occurred");
       }
 
-      const result = await response.json();
-      console.log("Success:", result);
+      navigate("/");
     } catch (error) {
       setError("root", { message: error.message });
     }
