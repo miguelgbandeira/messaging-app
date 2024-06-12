@@ -1,8 +1,6 @@
 import { RequestHandler } from "express";
 import ChatModel from "../models/chat";
 import createHttpError from "http-errors";
-import { User } from "../models/user";
-import { Message } from "../models/message";
 
 export const getChats: RequestHandler = async (req, res, next) => {
   try {
