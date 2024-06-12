@@ -14,10 +14,6 @@ mongoose.connect(process.env.MONGO_CONNECTION!);
 const db = mongoose.connection;
 db.on("error", console.error.bind(console, "mongo connection error"));
 
-app.get("/", (req, res, next) => {
-  res.send("Hello Word!");
-});
-
 app.listen(port, () => {
   console.log("server running on port " + port);
 });
