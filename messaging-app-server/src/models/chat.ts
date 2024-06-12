@@ -9,6 +9,6 @@ const chatSchema = new Schema({
   users: { type: [Schema.Types.ObjectId], ref: "User", required: true },
 });
 
-type Chat = InferSchemaType<typeof chatSchema>;
+export type Chat = InferSchemaType<typeof chatSchema>;
 
 export default model<Chat>("Chat", chatSchema);

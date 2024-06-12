@@ -15,6 +15,6 @@ const messageSchema = new Schema({
   SentOn: { type: Date, required: true },
 });
 
-type Message = InferSchemaType<typeof messageSchema>;
+export type Message = InferSchemaType<typeof messageSchema>;
 
 export default model<Message>("Message", messageSchema);

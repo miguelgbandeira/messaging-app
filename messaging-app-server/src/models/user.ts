@@ -5,6 +5,6 @@ const userSchema = new Schema({
   password: { type: String, required: true, unique: true, select: false },
 });
 
-type User = InferSchemaType<typeof userSchema>;
+export type User = InferSchemaType<typeof userSchema>;
 
 export default model<User>("User", userSchema);
