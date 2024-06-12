@@ -29,12 +29,14 @@ function LoginPage() {
       if (!response.ok) {
         const errorData = await response.json();
         console.log(errorData);
-        throw new Error(errorData.error || "An error occurred");
+        throw new Error(
+          (errorData as { error: string }).error || "An error occurred"
+        );
       }
 
       navigate("/");
     } catch (error) {
-      setError("root", { message: error.message });
+      setError("root", { message: (error as Error).message });
     }
   };
 
