@@ -52,3 +52,15 @@ export const login: RequestHandler = async (req, res, next) => {
     next(error);
   }
 };
+
+export const logout: RequestHandler = async (req, res, next) => {
+  try {
+    res.cookie("jwt", "", {
+      httpOnly: true,
+      expires: new Date(0),
+    });
+    res.status(200).json({ message: "User successfully logged out" });
+  } catch (error) {
+    next(error);
+  }
+};
