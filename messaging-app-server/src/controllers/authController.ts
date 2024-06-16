@@ -39,10 +39,15 @@ export const login: RequestHandler = async (req, res, next) => {
     const existingUser = await UserModel.findOne({ username: username })
       .select("+password")
       .exec();
-    if (!existingUser || existingUser.password !== password) {
-      throw createHttpError(400, "Incorrect credentials");
+
+    if (
+      !existingUser ||
+      !(await bcrypt.compare(password, existingUser.password))
+    ) {
+      throw createHttpError(401, "Incorrect credentials");
     }
-    return res.status(200).json({ message: "user successfully logged in" });
+    generateToken(res, existingUser._id);
+    return res.status(201).json(existingUser._id);
   } catch (error) {
     next(error);
   }
