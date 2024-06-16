@@ -1,6 +1,7 @@
 import Button from "../components/Button";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 
 type FormFields = {
   username: string;
@@ -33,7 +34,8 @@ function RegisterPage() {
         );
       }
 
-      navigate("/auth/login");
+      toast.success("Account created successfully");
+      navigate("/");
     } catch (error) {
       setError("root", { message: (error as Error).message });
     }
