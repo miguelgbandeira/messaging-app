@@ -24,8 +24,8 @@ export const createUser: RequestHandler = async (req, res, next) => {
     });
 
     if (newUser) {
-      generateToken(res, newUser._id);
-      return res.status(201).json(newUser._id);
+      const token = generateToken(res, newUser._id);
+      return res.status(201).json({ user: newUser._id, token: token });
     }
   } catch (error) {
     next(error);
@@ -46,8 +46,8 @@ export const login: RequestHandler = async (req, res, next) => {
     ) {
       throw createHttpError(401, "Incorrect credentials");
     }
-    generateToken(res, existingUser._id);
-    return res.status(201).json(existingUser._id);
+    const token = generateToken(res, existingUser._id);
+    return res.status(201).json({ user: existingUser._id, token: token });
   } catch (error) {
     next(error);
   }
