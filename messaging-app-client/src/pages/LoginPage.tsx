@@ -2,6 +2,8 @@ import Button from "../components/Button";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
+import useAuth from "../hooks/useAuth";
+import { useEffect } from "react";
 
 type FormFields = {
   username: string;
@@ -16,6 +18,15 @@ function LoginPage() {
     formState: { errors, isSubmitting },
   } = useForm<FormFields>();
   const navigate = useNavigate();
+  const { isAuthenticated } = useAuth();
+
+  useEffect(() => {
+    if (isAuthenticated) {
+      toast.info("You are already logged in");
+      navigate("/");
+      return;
+    }
+  });
 
   const onSubmit: SubmitHandler<FormFields> = async (data) => {
     try {
@@ -25,6 +36,7 @@ function LoginPage() {
           "Content-Type": "application/json",
         },
         body: JSON.stringify(data),
+        credentials: "include",
       });
 
       if (!response.ok) {
