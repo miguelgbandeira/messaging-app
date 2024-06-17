@@ -39,3 +39,15 @@ export const postChat: RequestHandler<
     next(error);
   }
 };
+
+export const getUserChats: RequestHandler = async (req, res) => {
+  const user = req.user;
+
+  const chats = ChatModel.find({ users: user }).exec();
+
+  if (!chats) {
+    throw createHttpError(404, "Chats not found");
+  }
+
+  return res.status(200).json(chats);
+};

@@ -7,7 +7,7 @@ router.post("/sign-up", createUser);
 router.post("/login", login);
 router.post("/logout", logout);
 router.get("/verify-token", verifyToken, (req, res) => {
-  res.status(200).json({ user: req.authData });
+  res.status(200).json({ user: req.user });
 });
 
 export default router;

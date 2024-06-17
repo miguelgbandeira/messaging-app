@@ -27,7 +27,7 @@ mongoose.connect(process.env.MONGO_CONNECTION!);
 const db = mongoose.connection;
 db.on("error", console.error.bind(console, "mongo connection error"));
 
-app.use("/chats", chatsRoutes);
+app.use("/messages", chatsRoutes);
 app.use("/users", usersRoutes);
 app.use("/auth", authRoutes);
 
