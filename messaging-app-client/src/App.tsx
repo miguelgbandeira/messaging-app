@@ -32,7 +32,7 @@ function App() {
     <>
       <ToastContainer autoClose={3000} />
       <h1 className="text-xl font-bold text-red-400">Hello World</h1>
-      <Outlet></Outlet>
+      <Outlet context={{ user, setUser }}></Outlet>
     </>
   );
 }
