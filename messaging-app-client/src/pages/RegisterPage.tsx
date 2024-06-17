@@ -25,6 +25,7 @@ function RegisterPage() {
           "Content-Type": "application/json",
         },
         body: JSON.stringify(data),
+        credentials: "include",
       });
 
       if (!response.ok) {
@@ -33,7 +34,6 @@ function RegisterPage() {
           (errorData as { error: string }).error || "An error occurred"
         );
       }
-
       toast.success("Account created successfully");
       navigate("/");
     } catch (error) {
