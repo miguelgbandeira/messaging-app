@@ -5,15 +5,12 @@ import "react-toastify/dist/ReactToastify.css";
 import { User } from "./models/user";
 
 function App() {
-  const [token, setToken] = useState(() => {
-    const token = localStorage.getItem("token");
-    return token ? token : "";
-  });
   const [user, setUser] = useState(null);
 
   useEffect(() => {
     async function fetchLoggedInUser() {
       try {
+        const token = localStorage.getItem("token");
         const userRes = await fetch("http://localhost:4000/auth/verify-token", {
           headers: {
             authorization: `Bearer ${token}`,
@@ -26,7 +23,7 @@ function App() {
       }
     }
     fetchLoggedInUser();
-  }, [token]);
+  }, []);
 
   return (
     <>
