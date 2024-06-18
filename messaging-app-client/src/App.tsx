@@ -3,6 +3,7 @@ import { Outlet } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { User } from "./models/user";
+import Users from "./components/Users";
 
 function App() {
   const [user, setUser] = useState(null);
@@ -29,6 +30,7 @@ function App() {
     <>
       <ToastContainer autoClose={3000} />
       <h1 className="text-xl font-bold text-red-400">Hello World</h1>
+      <Users></Users>
       <Outlet context={{ user, setUser }}></Outlet>
     </>
   );
