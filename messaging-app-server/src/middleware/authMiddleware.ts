@@ -1,6 +1,5 @@
 import jwt from "jsonwebtoken";
 import { RequestHandler } from "express";
-import createHttpError from "http-errors";
 import User from "../models/user";
 
 const verifyToken: RequestHandler = async (req, res, next) => {

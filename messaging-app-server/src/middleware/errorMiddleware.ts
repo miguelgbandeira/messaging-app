@@ -7,7 +7,6 @@ const handleError: ErrorRequestHandler = (
   res: Response,
   next: NextFunction
 ) => {
-  console.error(error);
   let errorMessage = "Something went wrong";
   let statusCode = 500;
   if (isHttpError(error)) {
