@@ -20,11 +20,13 @@ export default function useData<T>(
 
     const fetchData = async () => {
       try {
+        const token = localStorage.getItem("token");
         const response = await fetch(`http://localhost:4000${path}`, {
           mode: "cors",
           method,
           headers: {
             "Content-Type": "application/json",
+            authorization: `Bearer ${token}`,
           },
           body: method !== "GET" && body ? JSON.stringify(body) : null,
         });
