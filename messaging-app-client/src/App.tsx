@@ -3,7 +3,6 @@ import { Outlet } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { User } from "./models/user";
-import Users from "./components/Users";
 
 function App() {
   const [user, setUser] = useState(null);
