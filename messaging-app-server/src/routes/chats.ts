@@ -1,15 +1,10 @@
 import express from "express";
-import {
-  getChats,
-  getUserChats,
-  postChat,
-} from "../controllers/chatController";
+import { getUserChats, sendMessage } from "../controllers/chatController";
 import { verifyToken } from "../middleware/authMiddleware";
 
 const router = express.Router();
 
-router.get("/", getChats);
-router.post("/", postChat);
+router.post("/send", verifyToken, sendMessage);
 router.get("/user/chats", verifyToken, getUserChats);
 
 export default router;

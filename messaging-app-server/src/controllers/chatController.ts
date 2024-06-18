@@ -1,49 +1,58 @@
 import { RequestHandler } from "express";
-import ChatModel from "../models/chat";
+import Chat from "../models/chat";
+import Message from "../models/message";
 import createHttpError from "http-errors";
+import { User } from "../models/user";
 
-export const getChats: RequestHandler = async (req, res, next) => {
-  try {
-    const chats = await ChatModel.find().exec();
-    if (chats.length === 0) {
-      throw createHttpError(404, "Chats not found");
-    }
-    res.status(200).json(chats);
-  } catch (error) {
-    next(error);
-  }
-};
 interface CreateChatBody {
-  users: string[];
-  messages?: string[];
+  message: string;
+  sentFrom: User;
+  sentTo: User;
 }
 
-export const postChat: RequestHandler<
+export const sendMessage: RequestHandler<
   unknown,
   unknown,
   CreateChatBody,
   unknown
 > = async (req, res, next) => {
-  const { users, messages } = req.body;
+  const { message, sentFrom, sentTo } = req.body;
 
   try {
-    if (users.length !== 2) {
-      throw createHttpError(400, "Chat must have 2 users");
+    //check if already exists a chat with that user, otherwise create one
+    let chat = await Chat.findOne({ users: [sentFrom, sentTo] });
+    if (!chat) {
+      chat = new Chat({ users: [sentFrom, sentTo] });
+      await chat.save();
     }
-    const newChat = await ChatModel.create({
-      messages: messages ? messages : [],
-      users: users,
+
+    const newMessage = new Message({
+      chatId: chat._id,
+      message: message,
+      sentFrom: sentFrom,
+      sentTo: sentTo,
+      timestamp: new Date(),
     });
-    res.status(201).json(newChat);
+
+    await newMessage.save();
+
+    chat.last_message = newMessage._id;
+    await chat.save();
+
+    res.status(201).json(newMessage);
   } catch (error) {
     next(error);
   }
 };
 
 export const getUserChats: RequestHandler = async (req, res) => {
-  const user = req.user;
+  const user = req.user._id;
 
-  const chats = ChatModel.find({ users: user }).exec();
+  console.log(user);
+
+  const chats = await Chat.find({ users: user })
+    .populate("last_message")
+    .populate("users", "username");
 
   if (!chats) {
     throw createHttpError(404, "Chats not found");
