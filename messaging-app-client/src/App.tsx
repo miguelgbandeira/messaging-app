@@ -5,7 +5,7 @@ import "react-toastify/dist/ReactToastify.css";
 import { User } from "./models/user";
 
 function App() {
-  const [user, setUser] = useState(null);
+  const [user, setUser] = useState<User | null>(null);
 
   useEffect(() => {
     async function fetchLoggedInUser() {
@@ -17,7 +17,7 @@ function App() {
           },
         });
         const userData: User = await userRes.json();
-        setUser(userData.user.userId);
+        setUser(userData.user._id);
       } catch (error) {
         console.log(error);
       }
