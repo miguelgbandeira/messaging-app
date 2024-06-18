@@ -21,6 +21,7 @@ export const createUser: RequestHandler = async (req, res, next) => {
     const newUser = await UserModel.create({
       username: username,
       password: hashedPassword,
+      createdAt: Date.now(),
     });
 
     if (newUser) {
