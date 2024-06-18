@@ -36,6 +36,7 @@ function Users() {
 
   return (
     <>
+      <h1>Users:</h1>
       {users.map((user) => {
         const formattedDate = new Date(user.createdAt).toLocaleDateString(
           "en-US",
@@ -46,9 +47,8 @@ function Users() {
           }
         );
         return (
-          <div className="mb-5">
+          <div className="mb-5" key={user._id}>
             <UserCard
-              key={user._id}
               username={user.username}
               joinedAt={`Joined ${formattedDate}`}
             ></UserCard>
