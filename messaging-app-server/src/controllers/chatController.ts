@@ -21,6 +21,9 @@ export const sendMessage: RequestHandler<
   try {
     //check if already exists a chat with that user, otherwise create one
     let chat = await Chat.findOne({ users: [sentFrom, sentTo] });
+    if (req.user._id !== sentFrom) {
+      throw createHttpError(403, "Not authorized");
+    }
     if (!chat) {
       chat = new Chat({ users: [sentFrom, sentTo] });
       await chat.save();
