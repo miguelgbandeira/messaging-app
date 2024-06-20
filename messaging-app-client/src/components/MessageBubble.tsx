@@ -28,7 +28,7 @@ function MessageBubble({ message, user, color }: MessagesBubbleProps) {
 
   return (
     <div
-      className={`rounded-full mb-5 px-5 py-3 max-w-sm ${color}`}
+      className={`rounded-full px-5 py-3 max-w-sm ${color}`}
       key={message._id}
     >
       <span>{message.message}</span>

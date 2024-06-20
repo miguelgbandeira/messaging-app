@@ -16,7 +16,6 @@ function Users({ user, setSelectedUser, selectedUser }: UsersProps) {
 
   return (
     <>
-      <h1 className="mb-2">All Users</h1>
       {data &&
         data
           .filter((dataUser) => dataUser._id !== user)
