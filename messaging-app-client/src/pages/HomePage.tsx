@@ -16,7 +16,11 @@ function HomePage() {
     <>
       <div className="flex">
         <div className="border border-blue-500 p-5">
-          <Users setSelectedUser={setSelectedUser} user={user}></Users>
+          <Users
+            setSelectedUser={setSelectedUser}
+            user={user}
+            selectedUser={selectedUser}
+          ></Users>
         </div>
         <div className="border border-red-600 p-5">
           <ChatList

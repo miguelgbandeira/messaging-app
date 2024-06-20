@@ -5,9 +5,10 @@ import Card from "./Card";
 interface UsersProps {
   user: string;
   setSelectedUser: (userId: string) => void;
+  selectedUser: string | null;
 }
 
-function Users({ user, setSelectedUser }: UsersProps) {
+function Users({ user, setSelectedUser, selectedUser }: UsersProps) {
   const { data, error, loading } = useData<User[]>("/users");
 
   if (error) return <p>A network error was encountered</p>;
@@ -28,8 +29,13 @@ function Users({ user, setSelectedUser }: UsersProps) {
                 day: "numeric",
               }
             );
+            const isSelected = selectedUser ? user._id === selectedUser : false;
             return (
-              <div key={user._id} onClick={() => setSelectedUser(user._id)}>
+              <div
+                className={`${isSelected ? "bg-gray-200" : ""}`}
+                key={user._id}
+                onClick={() => setSelectedUser(user._id)}
+              >
                 <Card
                   username={user.username}
                   subText={`Joined ${formattedDate}`}
