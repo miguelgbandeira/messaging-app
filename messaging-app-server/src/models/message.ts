@@ -1,7 +1,7 @@
 import { InferSchemaType, Schema, model } from "mongoose";
 
 const messageSchema = new Schema({
-  chatId: { type: Schema.Types.ObjectId, ref: "Conversation", required: true },
+  chatId: { type: Schema.Types.ObjectId, ref: "Chat", required: true },
   message: { type: String, required: true },
   sentFrom: {
     type: Schema.Types.ObjectId,

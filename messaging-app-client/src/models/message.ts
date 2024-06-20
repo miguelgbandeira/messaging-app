@@ -1,5 +1,10 @@
+import { User } from "./user";
+
 export interface Message {
   _id: string;
-  username: string;
-  createdAt: Date;
+  chatId: string;
+  message: string;
+  sentFrom: User;
+  sentTo: User;
+  timestamp: Date;
 }
