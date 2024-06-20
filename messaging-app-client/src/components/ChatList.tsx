@@ -22,9 +22,13 @@ function ChatList({ user, onSelectChat }: ChatListProps) {
           );
 
           return (
-            <div key={chat._id} onClick={() => onSelectChat(chat._id)}>
+            <div
+              className="flex flex-col border border-1 border-black"
+              key={chat._id}
+              onClick={() => onSelectChat(chat._id)}
+            >
               {filteredUsers.map((filteredUser) => (
-                <span className="font-bold" key={filteredUser._id}>
+                <span className="font-bold text-lg" key={filteredUser._id}>
                   {filteredUser.username}
                 </span>
               ))}
