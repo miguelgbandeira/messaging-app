@@ -34,14 +34,14 @@ function MessagesContainer({
             .map((message) => (
               <div
                 key={message._id}
-                className={`flex px-2 ${message.sentFrom === sentFrom ? "justify-end" : "justify-start"}`}
+                className={`flex px-8 ${message.sentFrom === sentFrom ? "justify-end" : "justify-start"}`}
               >
                 <MessageBubble
                   message={message}
                   user={sentFrom}
                   color={
                     message.sentFrom === sentFrom
-                      ? "bg-green-200"
+                      ? "bg-blue-500 text-white"
                       : "bg-gray-300"
                   }
                 />
