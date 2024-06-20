@@ -22,15 +22,33 @@ function MessagesContainer({
   if (loading) return <p>Loading...</p>;
 
   return (
-    <div>
-      {!data && !sentTo && (
-        <p>Select a chat to see messages and send a message to a new user!</p>
-      )}
-      {data &&
-        data.map((message) => (
-          <MessageBubble message={message} user={sentFrom} key={message._id} />
-        ))}
-      <div>
+    <div className="flex flex-col h-full">
+      <div className="flex-grow overflow-y-auto flex flex-col-reverse">
+        {!data && !sentTo && (
+          <p>Select a chat to see messages and send a message to a new user!</p>
+        )}
+        {data &&
+          data
+            .slice()
+            .reverse()
+            .map((message) => (
+              <div
+                key={message._id}
+                className={`flex px-2 ${message.sentFrom === sentFrom ? "justify-end" : "justify-start"}`}
+              >
+                <MessageBubble
+                  message={message}
+                  user={sentFrom}
+                  color={
+                    message.sentFrom === sentFrom
+                      ? "bg-green-200"
+                      : "bg-gray-300"
+                  }
+                />
+              </div>
+            ))}
+      </div>
+      <div className="p-5">
         {(chatId || sentTo) && (
           <MessageArea sentFrom={sentFrom} sentTo={sentTo} />
         )}

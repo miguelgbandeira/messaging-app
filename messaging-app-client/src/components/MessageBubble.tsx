@@ -3,9 +3,10 @@ import { Message } from "../models/message";
 interface MessagesBubbleProps {
   message: Message;
   user: string;
+  color: string;
 }
 
-function MessageBubble({ message, user }: MessagesBubbleProps) {
+function MessageBubble({ message, user, color }: MessagesBubbleProps) {
   function formatDay(timestampString: string) {
     const timestamp = new Date(timestampString);
 
@@ -27,12 +28,12 @@ function MessageBubble({ message, user }: MessagesBubbleProps) {
 
   return (
     <div
-      className={`rounded-full mb-5 px-5 py-3 max-w-sm ${message.sentFrom === user ? "bg-green-200" : "bg-gray-200"}`}
+      className={`rounded-full mb-5 px-5 py-3 max-w-sm ${color}`}
       key={message._id}
     >
       <span>{message.message}</span>
-      <div className="flex justify-between font-extralight text-xs mt-4">
-        <span>{formatDay(message.timestamp)}</span>
+      <div className="flex justify-between font-extralight text-[8px] mt-1">
+        <span className="mr-2">{formatDay(message.timestamp)}</span>
         <span>{formatHour(message.timestamp)}</span>
       </div>
     </div>

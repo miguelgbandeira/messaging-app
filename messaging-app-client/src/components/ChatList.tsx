@@ -16,7 +16,7 @@ function ChatList({ user, onSelectChat, selectedChat }: ChatListProps) {
 
   return (
     <div className="min-w-80">
-      <p className="mb-2">Chat List</p>
+      <p className="mb-2 p-5 text-gray-700">Chat List</p>
       {data &&
         data.map((chat) => {
           const filteredUsers = chat.users.filter(

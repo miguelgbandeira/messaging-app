@@ -9,7 +9,7 @@ interface MessagesAreaProps {
 function MessageArea({ sentFrom, sentTo }: MessagesAreaProps) {
   const [message, setMessage] = useState("");
 
-  const handleChange = (event: ChangeEvent<HTMLTextAreaElement>) => {
+  const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
     setMessage(event.target.value);
   };
 
@@ -46,14 +46,14 @@ function MessageArea({ sentFrom, sentTo }: MessagesAreaProps) {
 
   return (
     <form className="flex gap-2" onSubmit={handleSubmit}>
-      <textarea
-        className="border w-full rounded"
+      <input
+        className="border w-full p-2 rounded-full"
         name="message-input"
         id="message-input"
         onChange={handleChange}
         value={message}
         required
-      ></textarea>
+      ></input>
       <button>
         <FontAwesomeIcon className="fa-xl" icon={faCircleRight} />
       </button>
