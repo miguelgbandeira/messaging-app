@@ -4,7 +4,7 @@ export interface Message {
   _id: string;
   chatId: string;
   message: string;
-  sentFrom: User;
+  sentFrom: string;
   sentTo: User;
-  timestamp: Date;
+  timestamp: string;
 }

@@ -7,15 +7,17 @@ interface UseDataReturn<T> {
 }
 
 export default function useData<T>(
-  path: string,
+  path: string | null,
   method: string = "GET",
   body: unknown = null
 ): UseDataReturn<T> {
   const [data, setData] = useState<T | null>(null);
   const [error, setError] = useState<Error | null>(null);
-  const [loading, setLoading] = useState<boolean>(true);
+  const [loading, setLoading] = useState<boolean>(false);
 
   useEffect(() => {
+    if (!path) return;
+
     setLoading(true);
 
     const fetchData = async () => {

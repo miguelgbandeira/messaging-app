@@ -3,9 +3,10 @@ import { Chat } from "../models/chat";
 
 interface ChatListProps {
   user: string;
+  onSelectChat: (chatId: string) => void;
 }
 
-function ChatList({ user }: ChatListProps) {
+function ChatList({ user, onSelectChat }: ChatListProps) {
   const { data, error, loading } = useData<Chat[]>("/messages/user/chats");
 
   if (error) return <p>A network error was encountered</p>;
@@ -21,13 +22,13 @@ function ChatList({ user }: ChatListProps) {
           );
 
           return (
-            <div key={chat._id}>
+            <div key={chat._id} onClick={() => onSelectChat(chat._id)}>
               {filteredUsers.map((filteredUser) => (
-                <p className="font-bold" key={filteredUser._id}>
+                <span className="font-bold" key={filteredUser._id}>
                   {filteredUser.username}
-                </p>
+                </span>
               ))}
-              <p className="font-light">{chat.last_message.message}</p>
+              <span className="font-light">{chat.last_message.message}</span>
             </div>
           );
         })}
