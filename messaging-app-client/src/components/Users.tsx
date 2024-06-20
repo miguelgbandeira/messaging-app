@@ -1,6 +1,7 @@
 import { User } from "../models/user";
 import UserCard from "./UserCard";
 import useData from "../hooks/useData";
+import Card from "./Card";
 
 interface UsersProps {
   user: string;
@@ -34,10 +35,10 @@ function Users({ user, setSelectedUser }: UsersProps) {
                 key={user._id}
                 onClick={() => setSelectedUser(user._id)}
               >
-                <UserCard
+                <Card
                   username={user.username}
-                  joinedAt={`Joined ${formattedDate}`}
-                ></UserCard>
+                  subText={`Joined ${formattedDate}`}
+                />
               </div>
             );
           })}

@@ -1,5 +1,8 @@
 import useData from "../hooks/useData";
 import { Chat } from "../models/chat";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faUser } from "@fortawesome/free-solid-svg-icons";
+import Card from "./Card";
 
 interface ChatListProps {
   user: string;
@@ -14,7 +17,7 @@ function ChatList({ user, onSelectChat }: ChatListProps) {
 
   return (
     <>
-      <p>Chat List</p>
+      <p className="mb-2">Chat List</p>
       {data &&
         data.map((chat) => {
           const filteredUsers = chat.users.filter(
@@ -23,16 +26,18 @@ function ChatList({ user, onSelectChat }: ChatListProps) {
 
           return (
             <div
-              className="flex flex-col border-t border-t-1 border-black cursor-pointer pt-2 mb-2"
+              className="flex flex-col "
               key={chat._id}
               onClick={() => onSelectChat(chat)}
             >
               {filteredUsers.map((filteredUser) => (
-                <span className="font-bold text-lg" key={filteredUser._id}>
-                  {filteredUser.username}
-                </span>
+                <div key={filteredUser._id}>
+                  <Card
+                    username={filteredUser.username}
+                    subText={chat.last_message.message}
+                  />
+                </div>
               ))}
-              <span className="font-light">{chat.last_message.message}</span>
             </div>
           );
         })}
