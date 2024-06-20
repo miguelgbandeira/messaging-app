@@ -23,10 +23,12 @@ function MessagesContainer({
 
   return (
     <div className="flex flex-col h-full">
+      {!data && !sentTo && (
+        <p className="text-center p-5">
+          Select a chat to see messages or send a message to a new user!
+        </p>
+      )}
       <div className="flex-grow overflow-y-auto flex flex-col-reverse">
-        {!data && !sentTo && (
-          <p>Select a chat to see messages and send a message to a new user!</p>
-        )}
         {data &&
           data
             .slice()

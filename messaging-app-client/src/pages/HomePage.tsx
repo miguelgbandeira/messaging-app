@@ -4,6 +4,8 @@ import MessagesContainer from "../components/MessagesContainer";
 import Users from "../components/Users";
 import { useState } from "react";
 import { Chat } from "../models/chat";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faRightFromBracket } from "@fortawesome/free-solid-svg-icons";
 
 function HomePage() {
   const { user } = useOutletContext();
@@ -23,6 +25,12 @@ function HomePage() {
           ></Users>
         </div> */}
         <div className="border border-gray-300 w-1/4">
+          <div className="flex align-middle">
+            <p className="mb-2 p-5 text-gray-700">Chat List</p>
+            <button>
+              <FontAwesomeIcon className="fa-lg" icon={faRightFromBracket} />
+            </button>
+          </div>
           <ChatList
             user={user}
             onSelectChat={handleSelectChat}
