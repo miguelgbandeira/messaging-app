@@ -3,7 +3,7 @@ import { Chat } from "../models/chat";
 
 interface ChatListProps {
   user: string;
-  onSelectChat: (chatId: string) => void;
+  onSelectChat: (chat: Chat) => void;
 }
 
 function ChatList({ user, onSelectChat }: ChatListProps) {
@@ -25,7 +25,7 @@ function ChatList({ user, onSelectChat }: ChatListProps) {
             <div
               className="flex flex-col border border-1 border-black"
               key={chat._id}
-              onClick={() => onSelectChat(chat._id)}
+              onClick={() => onSelectChat(chat)}
             >
               {filteredUsers.map((filteredUser) => (
                 <span className="font-bold text-lg" key={filteredUser._id}>

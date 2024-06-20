@@ -1,13 +1,19 @@
 import useData from "../hooks/useData";
 import { Message } from "../models/message";
 import MessageBubble from "./MessageBubble";
+import MessageArea from "./MessageArea";
 
 interface MessagesContainerProps {
-  chatId: string | null;
-  user: string;
+  chatId: string | undefined;
+  sentFrom: string;
+  sentTo: string | undefined;
 }
 
-function MessagesContainer({ chatId, user }: MessagesContainerProps) {
+function MessagesContainer({
+  chatId,
+  sentFrom,
+  sentTo,
+}: MessagesContainerProps) {
   const { data, error, loading } = useData<Message[]>(
     chatId ? `/messages/${chatId}` : null
   );
@@ -16,11 +22,14 @@ function MessagesContainer({ chatId, user }: MessagesContainerProps) {
   if (loading) return <p>Loading...</p>;
 
   return (
-    <>
-      {!data && <p>Send a message to start a conversation!</p>}
+    <div>
+      {!data && <p>Select a chat to see the messages!</p>}
       {data &&
-        data.map((message) => <MessageBubble message={message} user={user} />)}
-    </>
+        data.map((message) => (
+          <MessageBubble message={message} user={sentFrom} key={message._id} />
+        ))}
+      <div>{chatId && <MessageArea sentFrom={sentFrom} sentTo={sentTo} />}</div>
+    </div>
   );
 }
 

@@ -3,12 +3,13 @@ import ChatList from "../components/ChatList";
 import MessagesContainer from "../components/MessagesContainer";
 import Users from "../components/Users";
 import { useState } from "react";
+import { Chat } from "../models/chat";
 
 function HomePage() {
   const { user } = useOutletContext();
-  const [selectedChat, setSelectedChat] = useState<string | null>(null);
+  const [selectedChat, setSelectedChat] = useState<Chat | null>(null);
 
-  const handleSelectChat = (chatId: string) => setSelectedChat(chatId);
+  const handleSelectChat = (chat: Chat) => setSelectedChat(chat);
 
   return (
     <>
@@ -21,8 +22,12 @@ function HomePage() {
         </div>
         <div className="border border-green-600 p-5">
           <MessagesContainer
-            chatId={selectedChat}
-            user={user}
+            chatId={selectedChat?._id}
+            sentFrom={user}
+            sentTo={
+              selectedChat?.users.find((chatUser) => chatUser._id !== user._id)
+                ?._id
+            }
           ></MessagesContainer>
         </div>
       </div>
