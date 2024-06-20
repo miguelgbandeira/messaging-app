@@ -2,7 +2,6 @@ import { RequestHandler } from "express";
 import Chat from "../models/chat";
 import Message from "../models/message";
 import createHttpError from "http-errors";
-import { User } from "../models/user";
 import mongoose from "mongoose";
 
 interface CreateChatBody {
@@ -29,10 +28,8 @@ export const sendMessage: RequestHandler<
     if (!req.user._id.equals(sentFromObjectId)) {
       throw createHttpError(403, "Not authorized");
     }
-    console.log(chat);
 
     if (!chat) {
-      console.log("entered in if");
       chat = new Chat({ users: [sentFrom, sentTo] });
       await chat.save();
     }
