@@ -27,11 +27,11 @@ function MessageBubble({ message, user }: MessagesBubbleProps) {
 
   return (
     <div
-      className={`rounded-full mb-5 p-3 ${message.sentFrom === user ? "bg-green-200" : "bg-gray-200"}`}
+      className={`rounded-full mb-5 px-5 py-3 max-w-sm ${message.sentFrom === user ? "bg-green-200" : "bg-gray-200"}`}
       key={message._id}
     >
       <span>{message.message}</span>
-      <div className="flex gap-10 font-extralight text-xs">
+      <div className="flex justify-between font-extralight text-xs mt-4">
         <span>{formatDay(message.timestamp)}</span>
         <span>{formatHour(message.timestamp)}</span>
       </div>
