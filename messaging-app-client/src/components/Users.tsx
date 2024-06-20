@@ -1,5 +1,4 @@
 import { User } from "../models/user";
-import UserCard from "./UserCard";
 import useData from "../hooks/useData";
 import Card from "./Card";
 
@@ -16,7 +15,7 @@ function Users({ user, setSelectedUser }: UsersProps) {
 
   return (
     <>
-      <h1>Users:</h1>
+      <h1 className="mb-2">All Users</h1>
       {data &&
         data
           .filter((dataUser) => dataUser._id !== user)
@@ -30,11 +29,7 @@ function Users({ user, setSelectedUser }: UsersProps) {
               }
             );
             return (
-              <div
-                className="mb-5 cursor-pointer"
-                key={user._id}
-                onClick={() => setSelectedUser(user._id)}
-              >
+              <div key={user._id} onClick={() => setSelectedUser(user._id)}>
                 <Card
                   username={user.username}
                   subText={`Joined ${formattedDate}`}

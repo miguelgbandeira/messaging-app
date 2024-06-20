@@ -1,4 +1,6 @@
 import { ChangeEvent, FormEvent, useState } from "react";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faCircleRight } from "@fortawesome/free-solid-svg-icons";
 interface MessagesAreaProps {
   sentFrom: string;
   sentTo: string | undefined | null;
@@ -52,7 +54,9 @@ function MessageArea({ sentFrom, sentTo }: MessagesAreaProps) {
         value={message}
         required
       ></textarea>
-      <button>send</button>
+      <button>
+        <FontAwesomeIcon className="fa-xl" icon={faCircleRight} />
+      </button>
     </form>
   );
 }

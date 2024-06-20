@@ -1,7 +1,5 @@
 import useData from "../hooks/useData";
 import { Chat } from "../models/chat";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faUser } from "@fortawesome/free-solid-svg-icons";
 import Card from "./Card";
 
 interface ChatListProps {
@@ -16,7 +14,7 @@ function ChatList({ user, onSelectChat }: ChatListProps) {
   if (loading) return <p>Loading...</p>;
 
   return (
-    <>
+    <div className="min-w-80">
       <p className="mb-2">Chat List</p>
       {data &&
         data.map((chat) => {
@@ -41,7 +39,7 @@ function ChatList({ user, onSelectChat }: ChatListProps) {
             </div>
           );
         })}
-    </>
+    </div>
   );
 }
 
