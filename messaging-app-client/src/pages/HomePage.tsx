@@ -19,7 +19,11 @@ function HomePage() {
           <Users setSelectedUser={setSelectedUser} user={user}></Users>
         </div>
         <div className="border border-red-600 p-5">
-          <ChatList user={user} onSelectChat={handleSelectChat}></ChatList>
+          <ChatList
+            user={user}
+            onSelectChat={handleSelectChat}
+            selectedChat={selectedChat}
+          ></ChatList>
         </div>
         <div className="border border-green-600 p-5">
           <MessagesContainer

@@ -5,9 +5,10 @@ import Card from "./Card";
 interface ChatListProps {
   user: string;
   onSelectChat: (chat: Chat) => void;
+  selectedChat: Chat | null;
 }
 
-function ChatList({ user, onSelectChat }: ChatListProps) {
+function ChatList({ user, onSelectChat, selectedChat }: ChatListProps) {
   const { data, error, loading } = useData<Chat[]>("/messages/user/chats");
 
   if (error) return <p>A network error was encountered</p>;
@@ -21,15 +22,21 @@ function ChatList({ user, onSelectChat }: ChatListProps) {
           const filteredUsers = chat.users.filter(
             (chatUser) => chatUser._id !== user
           );
+          const isSelected = selectedChat
+            ? chat._id === selectedChat._id
+            : false;
 
           return (
             <div
-              className="flex flex-col "
+              className={"flex flex-col"}
               key={chat._id}
               onClick={() => onSelectChat(chat)}
             >
               {filteredUsers.map((filteredUser) => (
-                <div key={filteredUser._id}>
+                <div
+                  key={filteredUser._id}
+                  className={`${isSelected ? "bg-gray-200" : ""}`}
+                >
                   <Card
                     username={filteredUser.username}
                     subText={chat.last_message.message}
