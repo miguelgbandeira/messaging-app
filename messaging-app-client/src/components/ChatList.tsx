@@ -23,7 +23,7 @@ function ChatList({ user, onSelectChat }: ChatListProps) {
 
           return (
             <div
-              className="flex flex-col border border-1 border-black"
+              className="flex flex-col border-t border-t-1 border-black cursor-pointer pt-2 mb-2"
               key={chat._id}
               onClick={() => onSelectChat(chat)}
             >

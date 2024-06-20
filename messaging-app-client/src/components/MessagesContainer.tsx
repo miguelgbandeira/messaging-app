@@ -23,7 +23,9 @@ function MessagesContainer({
 
   return (
     <div>
-      {!data && !sentTo && <p>Select a chat to see the messages!</p>}
+      {!data && !sentTo && (
+        <p>Select a chat to see messages and send a message to a new user!</p>
+      )}
       {data &&
         data.map((message) => (
           <MessageBubble message={message} user={sentFrom} key={message._id} />

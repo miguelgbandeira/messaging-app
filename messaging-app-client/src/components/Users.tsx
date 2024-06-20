@@ -30,7 +30,7 @@ function Users({ user, setSelectedUser }: UsersProps) {
             );
             return (
               <div
-                className="mb-5"
+                className="mb-5 cursor-pointer"
                 key={user._id}
                 onClick={() => setSelectedUser(user._id)}
               >
