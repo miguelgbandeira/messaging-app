@@ -1,7 +1,7 @@
 import { ChangeEvent, FormEvent, useState } from "react";
 interface MessagesAreaProps {
   sentFrom: string;
-  sentTo: string | undefined;
+  sentTo: string | undefined | null;
 }
 
 function MessageArea({ sentFrom, sentTo }: MessagesAreaProps) {

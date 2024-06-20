@@ -6,7 +6,7 @@ import MessageArea from "./MessageArea";
 interface MessagesContainerProps {
   chatId: string | undefined;
   sentFrom: string;
-  sentTo: string | undefined;
+  sentTo: string | undefined | null;
 }
 
 function MessagesContainer({
@@ -23,12 +23,16 @@ function MessagesContainer({
 
   return (
     <div>
-      {!data && <p>Select a chat to see the messages!</p>}
+      {!data && !sentTo && <p>Select a chat to see the messages!</p>}
       {data &&
         data.map((message) => (
           <MessageBubble message={message} user={sentFrom} key={message._id} />
         ))}
-      <div>{chatId && <MessageArea sentFrom={sentFrom} sentTo={sentTo} />}</div>
+      <div>
+        {(chatId || sentTo) && (
+          <MessageArea sentFrom={sentFrom} sentTo={sentTo} />
+        )}
+      </div>
     </div>
   );
 }

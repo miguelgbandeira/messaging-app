@@ -8,6 +8,7 @@ import { Chat } from "../models/chat";
 function HomePage() {
   const { user } = useOutletContext();
   const [selectedChat, setSelectedChat] = useState<Chat | null>(null);
+  const [selectedUser, setSelectedUser] = useState<string | null>(null);
 
   const handleSelectChat = (chat: Chat) => setSelectedChat(chat);
 
@@ -15,7 +16,7 @@ function HomePage() {
     <>
       <div className="flex">
         <div className="border border-blue-500 p-5">
-          <Users></Users>
+          <Users setSelectedUser={setSelectedUser} user={user}></Users>
         </div>
         <div className="border border-red-600 p-5">
           <ChatList user={user} onSelectChat={handleSelectChat}></ChatList>
@@ -26,7 +27,7 @@ function HomePage() {
             sentFrom={user}
             sentTo={
               selectedChat?.users.find((chatUser) => chatUser._id !== user._id)
-                ?._id
+                ?._id || selectedUser
             }
           ></MessagesContainer>
         </div>
