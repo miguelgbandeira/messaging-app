@@ -1,7 +1,11 @@
 import useData from "../hooks/useData";
 import { Chat } from "../models/chat";
 
-function ChatList({ user }) {
+interface ChatListProps {
+  user: string;
+}
+
+function ChatList({ user }: ChatListProps) {
   const { data, error, loading } = useData<Chat[]>("/messages/user/chats");
 
   if (error) return <p>A network error was encountered</p>;
