@@ -7,11 +7,11 @@ import { useNavigate } from "react-router-dom";
 
 interface UsersProps {
   user: string;
-  setSelectedUser: (userId: string) => void;
+  handleSelectUser: (userId: string) => void;
   selectedUser: string | null;
 }
 
-function Users({ user, setSelectedUser, selectedUser }: UsersProps) {
+function UserList({ user, handleSelectUser, selectedUser }: UsersProps) {
   const { data, error, loading } = useData<User[]>("/users");
   const navigate = useNavigate();
 
@@ -44,7 +44,7 @@ function Users({ user, setSelectedUser, selectedUser }: UsersProps) {
               <div
                 className={`${isSelected ? "bg-gray-200" : ""}`}
                 key={user._id}
-                onClick={() => setSelectedUser(user._id)}
+                onClick={() => handleSelectUser(user._id)}
               >
                 <Card
                   username={user.username}
@@ -57,4 +57,4 @@ function Users({ user, setSelectedUser, selectedUser }: UsersProps) {
   );
 }
 
-export default Users;
+export default UserList;
