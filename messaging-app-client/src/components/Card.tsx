@@ -8,7 +8,7 @@ interface CardProps {
 
 function Card({ username, subText }: CardProps) {
   return (
-    <div className="flex space-x-4 border-t border-t-1 border-gray-200 cursor-pointer pt-2 mb-2 pl-5">
+    <div className="flex space-x-4 border-t border-t-1 border-gray-200 py-2 pl-5 cursor-pointer">
       <div className="bg-gray-300 rounded-full flex justify-center items-center w-16 h-16">
         <FontAwesomeIcon className="fa-3x text-white" icon={faUser} />
       </div>
