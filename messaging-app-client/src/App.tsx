@@ -7,28 +7,29 @@ import { User } from "./models/user";
 function App() {
   const [user, setUser] = useState<User | null>(null);
 
-  useEffect(() => {
-    async function fetchLoggedInUser() {
-      try {
-        const token = localStorage.getItem("token");
-        const userRes = await fetch("http://localhost:4000/auth/verify-token", {
-          headers: {
-            authorization: `Bearer ${token}`,
-          },
-        });
-        const userData: User = await userRes.json();
-        setUser(userData.user._id);
-      } catch (error) {
-        console.log(error);
-      }
+  const fetchLoggedInUser = async () => {
+    try {
+      const token = localStorage.getItem("token");
+      const userRes = await fetch("http://localhost:4000/auth/verify-token", {
+        headers: {
+          authorization: `Bearer ${token}`,
+        },
+      });
+      const userData: User = await userRes.json();
+      setUser(userData.user._id);
+    } catch (error) {
+      console.log(error);
     }
+  };
+
+  useEffect(() => {
     fetchLoggedInUser();
   }, []);
 
   return (
     <>
       <ToastContainer autoClose={3000} />
-      <Outlet context={{ user, setUser }}></Outlet>
+      <Outlet context={{ user, setUser, fetchLoggedInUser }} />
     </>
   );
 }

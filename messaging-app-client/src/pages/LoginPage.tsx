@@ -17,7 +17,7 @@ function LoginPage() {
     formState: { errors, isSubmitting },
   } = useForm<FormFields>();
   const navigate = useNavigate();
-  const { user } = useOutletContext();
+  const { user, setUser, fetchLoggedInUser } = useOutletContext();
 
   useEffect(() => {
     if (user) {
@@ -47,6 +47,7 @@ function LoginPage() {
 
       const { token } = responseData;
       localStorage.setItem("token", token);
+      await fetchLoggedInUser();
       toast.success("Logged in successfully");
       navigate("/");
     } catch (error) {
