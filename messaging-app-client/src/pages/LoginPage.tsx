@@ -25,7 +25,7 @@ function LoginPage() {
       navigate("/");
       return;
     }
-  });
+  }, []);
 
   const onSubmit: SubmitHandler<FormFields> = async (data) => {
     try {

@@ -1,8 +1,12 @@
 import { useState, useEffect } from "react";
 
+interface FetchDataError extends Error {
+  status?: number;
+}
+
 interface UseDataReturn<T> {
   data: T | null;
-  error: Error | null;
+  error: FetchDataError | null;
   loading: boolean;
 }
 
@@ -12,7 +16,7 @@ export default function useData<T>(
   body: unknown = null
 ): UseDataReturn<T> {
   const [data, setData] = useState<T | null>(null);
-  const [error, setError] = useState<Error | null>(null);
+  const [error, setError] = useState<FetchDataError | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
 
   useEffect(() => {
@@ -34,13 +38,15 @@ export default function useData<T>(
         });
 
         if (!response.ok) {
-          throw new Error("Server error");
+          const error = new Error("Server error") as FetchDataError;
+          error.status = response.status;
+          throw error;
         }
 
         const data = await response.json();
         setData(data);
       } catch (error) {
-        setError(error as Error);
+        setError(error as FetchDataError);
       } finally {
         setLoading(false);
       }

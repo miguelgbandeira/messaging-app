@@ -1,12 +1,17 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faRightFromBracket } from "@fortawesome/free-solid-svg-icons";
 import { toast } from "react-toastify";
+import { useNavigate, useOutletContext } from "react-router-dom";
 
 function Header({ tabSelected, handleClick }) {
+  const { setUser } = useOutletContext();
+  const navigate = useNavigate();
   function handleSignOut() {
     try {
       localStorage.setItem("token", "");
+      setUser(null);
       toast.info("You have sucessfully logged out");
+      navigate("/auth/login");
     } catch (error) {
       throw new Error(error.message);
     }

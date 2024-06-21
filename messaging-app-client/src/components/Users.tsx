@@ -1,6 +1,9 @@
 import { User } from "../models/user";
 import useData from "../hooks/useData";
 import Card from "./Card";
+import { useEffect } from "react";
+import { toast } from "react-toastify";
+import { useNavigate } from "react-router-dom";
 
 interface UsersProps {
   user: string;
@@ -10,6 +13,14 @@ interface UsersProps {
 
 function Users({ user, setSelectedUser, selectedUser }: UsersProps) {
   const { data, error, loading } = useData<User[]>("/users");
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (error && error.status === 403) {
+      toast.warn("Please login to access the list of users");
+      navigate("/auth/login");
+    }
+  }, [error, navigate]);
 
   if (error) return <p>A network error was encountered</p>;
   if (loading) return <p>Loading...</p>;
