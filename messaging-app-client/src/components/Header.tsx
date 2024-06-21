@@ -1,10 +1,12 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faRightFromBracket } from "@fortawesome/free-solid-svg-icons";
+import { toast } from "react-toastify";
 
 function Header({ tabSelected, handleClick }) {
   function handleSignOut() {
     try {
       localStorage.setItem("token", "");
+      toast.info("You have sucessfully logged out");
     } catch (error) {
       throw new Error(error.message);
     }
