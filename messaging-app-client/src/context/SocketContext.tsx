@@ -1,4 +1,4 @@
-import { ReactNode, createContext, useEffect, useState } from "react";
+import { ReactNode, createContext, useEffect, useState, FC } from "react";
 import io, { Socket } from "socket.io-client";
 import { User } from "../models/user";
 
@@ -13,27 +13,33 @@ interface SocketContextProviderProps {
 
 export const SocketContext = createContext<SocketContextType | null>(null);
 
-export const SocketContextProvider = ({
+export const SocketContextProvider: FC<SocketContextProviderProps> = ({
   user,
   children,
-}: SocketContextProviderProps) => {
+}) => {
   const [socket, setSocket] = useState<Socket | null>(null);
 
   useEffect(() => {
     if (user) {
-      const socket = io("http://localhost:4000", {
+      const socketInstance = io("http://localhost:4000", {
         query: { userId: user._id },
       });
-      setSocket(socket);
-      return () => socket.close();
+      setSocket(socketInstance);
+
+      return () => {
+        socketInstance.close();
+      };
     } else {
       if (socket) {
         socket.close();
         setSocket(null);
       }
     }
-  }, [socket, user]);
+  }, [user, socket]);
+
   return (
-    <SocketContext.Provider value={socket}>{children}</SocketContext.Provider>
+    <SocketContext.Provider value={{ socket }}>
+      {children}
+    </SocketContext.Provider>
   );
 };

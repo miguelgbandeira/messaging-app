@@ -8,6 +8,7 @@ interface UseDataReturn<T> {
   data: T | null;
   error: FetchDataError | null;
   loading: boolean;
+  setData: (data: T) => void;
 }
 
 export default function useData<T>(
@@ -55,5 +56,5 @@ export default function useData<T>(
     fetchData();
   }, [path, method, body]);
 
-  return { data, error, loading };
+  return { data, error, loading, setData };
 }

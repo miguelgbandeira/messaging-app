@@ -15,7 +15,7 @@ function App() {
           authorization: `Bearer ${token}`,
         },
       });
-      const userData: User = await userRes.json();
+      const userData = await userRes.json();
       setUser(userData.user._id);
     } catch (error) {
       console.log(error);

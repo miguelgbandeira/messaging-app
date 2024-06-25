@@ -14,7 +14,7 @@ function MessagesContainer({
   sentFrom,
   sentTo,
 }: MessagesContainerProps) {
-  const { data, error, loading } = useData<Message[]>(
+  const { data, error, loading, setData } = useData<Message[]>(
     chatId ? `/messages/${chatId}` : null
   );
 
@@ -52,7 +52,7 @@ function MessagesContainer({
       </div>
       <div className="p-5">
         {(chatId || sentTo) && (
-          <MessageArea sentFrom={sentFrom} sentTo={sentTo} />
+          <MessageArea setData={setData} sentFrom={sentFrom} sentTo={sentTo} />
         )}
       </div>
     </div>
