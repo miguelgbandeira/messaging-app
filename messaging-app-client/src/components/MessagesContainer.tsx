@@ -1,9 +1,6 @@
-import useData from "../hooks/useData";
 import { Message } from "../models/message";
 import MessageBubble from "./MessageBubble";
 import MessageArea from "./MessageArea";
-import { useContext, useEffect } from "react";
-import { SocketContext } from "../context/SocketContext";
 
 interface MessagesContainerProps {
   chatId: string | undefined;
@@ -11,6 +8,7 @@ interface MessagesContainerProps {
   sentTo: string | undefined | null;
   messages: Message[];
   setMessages: React.Dispatch<React.SetStateAction<Message[]>>;
+  updateLastMessage: (message: Message) => void;
 }
 
 function MessagesContainer({
@@ -19,6 +17,7 @@ function MessagesContainer({
   sentTo,
   messages,
   setMessages,
+  updateLastMessage,
 }: MessagesContainerProps) {
   if (messages.length === 0) return <div>No messages yet.</div>;
 
@@ -57,6 +56,7 @@ function MessagesContainer({
             setData={setMessages}
             sentFrom={sentFrom}
             sentTo={sentTo}
+            updateLastMessage={updateLastMessage}
           />
         )}
       </div>

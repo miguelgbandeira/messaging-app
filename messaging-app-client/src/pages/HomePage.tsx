@@ -87,12 +87,13 @@ function HomePage() {
   useEffect(() => {
     socket?.on("newMessage", (message: Message) => {
       setMessages((prevData) => [...prevData, message]);
+      updateLastMessage(message);
     });
 
     return () => {
       socket?.off("newMessage");
     };
-  }, [socket]);
+  }, [socket, chatList]);
 
   const handleSelectChat = (chat: Chat) => {
     setSelectedChat(chat);
@@ -112,6 +113,16 @@ function HomePage() {
       return chatUser ? chatUser._id : null;
     }
     return selectedUser;
+  };
+
+  const updateLastMessage = (message: Message) => {
+    const chats = chatList.map((chat) => {
+      if (chat._id === message.chatId) {
+        chat.last_message = message;
+      }
+      return chat;
+    });
+    setChatList(chats);
   };
 
   return (
@@ -143,6 +154,7 @@ function HomePage() {
           sentTo={getSentTo()}
           messages={messages}
           setMessages={setMessages}
+          updateLastMessage={updateLastMessage}
         />
       </div>
     </div>

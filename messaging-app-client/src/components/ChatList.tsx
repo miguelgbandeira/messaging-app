@@ -1,9 +1,5 @@
-import { useEffect } from "react";
-import useData from "../hooks/useData";
 import { Chat } from "../models/chat";
 import Card from "./Card";
-import { useNavigate } from "react-router-dom";
-import { toast } from "react-toastify";
 
 interface ChatListProps {
   user: string;
