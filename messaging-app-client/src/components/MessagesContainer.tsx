@@ -1,6 +1,7 @@
 import { Message } from "../models/message";
 import MessageBubble from "./MessageBubble";
 import MessageArea from "./MessageArea";
+import { Chat } from "../models/chat";
 
 interface MessagesContainerProps {
   chatId: string | undefined;
@@ -9,6 +10,7 @@ interface MessagesContainerProps {
   messages: Message[];
   setMessages: React.Dispatch<React.SetStateAction<Message[]>>;
   updateLastMessage: (message: Message) => void;
+  selectedChat: Chat | null;
 }
 
 function MessagesContainer({
@@ -18,6 +20,7 @@ function MessagesContainer({
   messages,
   setMessages,
   updateLastMessage,
+  selectedChat,
 }: MessagesContainerProps) {
   if (messages.length === 0) return <div>No messages yet.</div>;
 
@@ -30,6 +33,7 @@ function MessagesContainer({
       )}
       <div className="flex-grow overflow-y-auto flex flex-col-reverse">
         {messages &&
+          selectedChat &&
           messages
             .slice()
             .reverse()

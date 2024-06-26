@@ -155,6 +155,7 @@ function HomePage() {
           messages={messages}
           setMessages={setMessages}
           updateLastMessage={updateLastMessage}
+          selectedChat={selectedChat}
         />
       </div>
     </div>

@@ -49,7 +49,6 @@ function MessageArea({
 
       const responseMessage = await response.json();
 
-      console.log("Message sent successfully!");
       setMessage("");
       setData((prevData: Message) => [...prevData, responseMessage]);
       updateLastMessage(responseMessage);
