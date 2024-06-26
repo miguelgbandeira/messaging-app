@@ -5,7 +5,7 @@ import { Message } from "../models/message";
 interface MessagesAreaProps {
   sentFrom: string;
   sentTo: string | undefined | null;
-  setData: (data: Message[]) => void;
+  setData: React.Dispatch<React.SetStateAction<Message[]>>;
 }
 
 function MessageArea({ sentFrom, sentTo, setData }: MessagesAreaProps) {
@@ -42,7 +42,7 @@ function MessageArea({ sentFrom, sentTo, setData }: MessagesAreaProps) {
 
       console.log("Message sent successfully!");
       setMessage("");
-      setData((prevData) => [...prevData, newMessage]);
+      setData((prevData: Message) => [...prevData, newMessage]);
     } catch (error) {
       console.error("Error sending message:", error);
     }
