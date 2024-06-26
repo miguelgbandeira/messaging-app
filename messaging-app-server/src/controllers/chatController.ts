@@ -3,6 +3,7 @@ import Chat from "../models/chat";
 import Message from "../models/message";
 import createHttpError from "http-errors";
 import mongoose from "mongoose";
+import { getReceiverSocketId, io } from "../socket/socket";
 
 interface CreateChatBody {
   message: string;
@@ -46,6 +47,11 @@ export const sendMessage: RequestHandler<
 
     chat.last_message = newMessage._id;
     await chat.save();
+
+    const receiverSocketId = getReceiverSocketId(sentTo);
+    if (receiverSocketId) {
+      io.to(receiverSocketId).emit("newMessage", newMessage);
+    }
 
     res.status(201).json(newMessage);
   } catch (error) {

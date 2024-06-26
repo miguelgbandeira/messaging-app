@@ -3,6 +3,7 @@ import { Outlet } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { User } from "./models/user";
+import { SocketContextProvider } from "./context/SocketContext";
 
 function App() {
   const [user, setUser] = useState<User | null>(null);
@@ -28,8 +29,10 @@ function App() {
 
   return (
     <>
-      <ToastContainer autoClose={3000} />
-      <Outlet context={{ user, setUser, fetchLoggedInUser }} />
+      <SocketContextProvider user={user}>
+        <ToastContainer autoClose={3000} />
+        <Outlet context={{ user, setUser, fetchLoggedInUser }} />
+      </SocketContextProvider>
     </>
   );
 }

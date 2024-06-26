@@ -25,7 +25,7 @@ function HomePage() {
   const getSentTo = () => {
     if (selectedChat) {
       const chatUser = selectedChat.users.find(
-        (chatUser) => chatUser._id !== user._id
+        (chatUser) => chatUser._id !== user
       );
       return chatUser ? chatUser._id : null;
     }

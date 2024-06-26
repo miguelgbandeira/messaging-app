@@ -7,7 +7,7 @@ interface SocketContextType {
 }
 
 interface SocketContextProviderProps {
-  user: User;
+  user: User | null;
   children: ReactNode;
 }
 
@@ -22,7 +22,7 @@ export const SocketContextProvider: FC<SocketContextProviderProps> = ({
   useEffect(() => {
     if (user) {
       const socketInstance = io("http://localhost:4000", {
-        query: { userId: user._id },
+        query: { userId: user },
       });
       setSocket(socketInstance);
 
@@ -35,7 +35,7 @@ export const SocketContextProvider: FC<SocketContextProviderProps> = ({
         setSocket(null);
       }
     }
-  }, [user, socket]);
+  }, [user]);
 
   return (
     <SocketContext.Provider value={{ socket }}>

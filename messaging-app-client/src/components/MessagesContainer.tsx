@@ -2,6 +2,8 @@ import useData from "../hooks/useData";
 import { Message } from "../models/message";
 import MessageBubble from "./MessageBubble";
 import MessageArea from "./MessageArea";
+import { useContext, useEffect } from "react";
+import { SocketContext } from "../context/SocketContext";
 
 interface MessagesContainerProps {
   chatId: string | undefined;
@@ -17,6 +19,17 @@ function MessagesContainer({
   const { data, error, loading, setData } = useData<Message[]>(
     chatId ? `/messages/${chatId}` : null
   );
+  const { socket } = useContext(SocketContext);
+
+  useEffect(() => {
+    socket?.on("newMessage", (message: Message) => {
+      setData((prevData) => [...prevData, message]);
+    });
+
+    return () => {
+      socket?.off("newMessage");
+    };
+  }, [socket, setData]);
 
   if (error) return <div>No messages yet.</div>;
   if (loading) return <p>Loading...</p>;

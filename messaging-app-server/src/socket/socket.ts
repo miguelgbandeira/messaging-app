@@ -17,6 +17,10 @@ interface UserSocketMap {
 
 const userSocketMap: UserSocketMap = {}; // {userId: socketId}
 
+export const getReceiverSocketId = (receiverId: string) => {
+  return userSocketMap[receiverId];
+};
+
 io.on("connection", (socket) => {
   console.log("a user connect with id", socket.id);
 
