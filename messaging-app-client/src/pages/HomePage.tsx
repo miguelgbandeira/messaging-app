@@ -1,7 +1,7 @@
 import { useOutletContext } from "react-router-dom";
 import ChatList from "../components/ChatList";
 import MessagesContainer from "../components/MessagesContainer";
-import { useContext, useEffect, useState } from "react";
+import { useCallback, useContext, useEffect, useMemo, useState } from "react";
 import { Chat } from "../models/chat";
 import Header from "../components/Header";
 import UserList from "../components/UserList";
@@ -19,10 +19,12 @@ function HomePage() {
   const [selectedUser, setSelectedUser] = useState<string | null>(null);
   const [tabSelected, setTabSelected] = useState<string>("Chats");
   const [error, setError] = useState<FetchDataError | null>(null);
+  const [loading, setLoading] = useState<boolean>(false);
   const [messages, setMessages] = useState<Message[]>([]);
   const [chatList, setChatList] = useState<Chat[]>([]);
 
   useEffect(() => {
+    setLoading(true);
     const fetchData = async () => {
       try {
         const token = localStorage.getItem("token");
@@ -47,6 +49,8 @@ function HomePage() {
         setChatList(data);
       } catch (error) {
         setError(error as FetchDataError);
+      } finally {
+        setLoading(false);
       }
     };
 
@@ -95,17 +99,17 @@ function HomePage() {
     };
   }, [socket, chatList]);
 
-  const handleSelectChat = (chat: Chat) => {
+  const handleSelectChat = useCallback((chat: Chat) => {
     setSelectedChat(chat);
     setSelectedUser(null);
-  };
+  }, []);
 
-  const handleSelectUser = (user: string) => {
+  const handleSelectUser = useCallback((user: string) => {
     setSelectedUser(user);
     setSelectedChat(null);
-  };
+  }, []);
 
-  const getSentTo = () => {
+  const getSentTo = useMemo(() => {
     if (selectedChat) {
       const chatUser = selectedChat.users.find(
         (chatUser) => chatUser._id !== user
@@ -113,17 +117,20 @@ function HomePage() {
       return chatUser ? chatUser._id : null;
     }
     return selectedUser;
-  };
+  }, [selectedChat, selectedUser, user]);
 
-  const updateLastMessage = (message: Message) => {
-    const chats = chatList.map((chat) => {
-      if (chat._id === message.chatId) {
-        chat.last_message = message;
-      }
-      return chat;
-    });
-    setChatList(chats);
-  };
+  const updateLastMessage = useCallback(
+    (message: Message) => {
+      const chats = chatList.map((chat) => {
+        if (chat._id === message.chatId) {
+          chat.last_message = message;
+        }
+        return chat;
+      });
+      setChatList(chats);
+    },
+    [chatList]
+  );
 
   return (
     <div className="flex">
@@ -151,7 +158,7 @@ function HomePage() {
           key={`${selectedChat?._id}-${selectedUser}`}
           chatId={selectedChat?._id}
           sentFrom={user}
-          sentTo={getSentTo()}
+          sentTo={getSentTo}
           messages={messages}
           setMessages={setMessages}
           updateLastMessage={updateLastMessage}
