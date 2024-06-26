@@ -2,13 +2,20 @@ import { ChangeEvent, FormEvent, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCircleRight } from "@fortawesome/free-solid-svg-icons";
 import { Message } from "../models/message";
+
 interface MessagesAreaProps {
   sentFrom: string;
   sentTo: string | undefined | null;
-  setData: (data: Message[]) => void;
+  setData: React.Dispatch<React.SetStateAction<Message[]>>;
+  updateLastMessage: (message: Message) => void;
 }
 
-function MessageArea({ sentFrom, sentTo, setData }: MessagesAreaProps) {
+function MessageArea({
+  sentFrom,
+  sentTo,
+  setData,
+  updateLastMessage,
+}: MessagesAreaProps) {
   const [message, setMessage] = useState("");
 
   const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
@@ -40,9 +47,11 @@ function MessageArea({ sentFrom, sentTo, setData }: MessagesAreaProps) {
         throw new Error("Network response was not ok");
       }
 
-      console.log("Message sent successfully!");
+      const responseMessage = await response.json();
+
       setMessage("");
-      setData((prevData) => [...prevData, newMessage]);
+      setData((prevData: Message) => [...prevData, responseMessage]);
+      updateLastMessage(responseMessage);
     } catch (error) {
       console.error("Error sending message:", error);
     }

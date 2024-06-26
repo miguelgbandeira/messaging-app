@@ -52,6 +52,7 @@ export const sendMessage: RequestHandler<
     if (receiverSocketId) {
       io.to(receiverSocketId).emit("newMessage", newMessage);
     }
+    console.log("emitted message to", receiverSocketId, sentTo);
 
     res.status(201).json(newMessage);
   } catch (error) {

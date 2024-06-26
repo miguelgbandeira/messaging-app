@@ -1,49 +1,40 @@
-import useData from "../hooks/useData";
 import { Message } from "../models/message";
 import MessageBubble from "./MessageBubble";
 import MessageArea from "./MessageArea";
-import { useContext, useEffect } from "react";
-import { SocketContext } from "../context/SocketContext";
+import { Chat } from "../models/chat";
 
 interface MessagesContainerProps {
   chatId: string | undefined;
   sentFrom: string;
   sentTo: string | undefined | null;
+  messages: Message[];
+  setMessages: React.Dispatch<React.SetStateAction<Message[]>>;
+  updateLastMessage: (message: Message) => void;
+  selectedChat: Chat | null;
 }
 
 function MessagesContainer({
   chatId,
   sentFrom,
   sentTo,
+  messages,
+  setMessages,
+  updateLastMessage,
+  selectedChat,
 }: MessagesContainerProps) {
-  const { data, error, loading, setData } = useData<Message[]>(
-    chatId ? `/messages/${chatId}` : null
-  );
-  const { socket } = useContext(SocketContext);
-
-  useEffect(() => {
-    socket?.on("newMessage", (message: Message) => {
-      setData((prevData) => [...prevData, message]);
-    });
-
-    return () => {
-      socket?.off("newMessage");
-    };
-  }, [socket, setData]);
-
-  if (error) return <div>No messages yet.</div>;
-  if (loading) return <p>Loading...</p>;
+  if (messages.length === 0) return <div>No messages yet.</div>;
 
   return (
     <div className="flex flex-col h-full">
-      {!data && !sentTo && (
+      {!messages && !sentTo && (
         <p className="text-center p-5">
           Select a chat to see messages or send a message to a new user!
         </p>
       )}
       <div className="flex-grow overflow-y-auto flex flex-col-reverse">
-        {data &&
-          data
+        {messages &&
+          selectedChat &&
+          messages
             .slice()
             .reverse()
             .map((message) => (
@@ -65,7 +56,12 @@ function MessagesContainer({
       </div>
       <div className="p-5">
         {(chatId || sentTo) && (
-          <MessageArea setData={setData} sentFrom={sentFrom} sentTo={sentTo} />
+          <MessageArea
+            setData={setMessages}
+            sentFrom={sentFrom}
+            sentTo={sentTo}
+            updateLastMessage={updateLastMessage}
+          />
         )}
       </div>
     </div>

@@ -1,31 +1,22 @@
-import { useEffect } from "react";
-import useData from "../hooks/useData";
 import { Chat } from "../models/chat";
 import Card from "./Card";
-import { useNavigate } from "react-router-dom";
-import { toast } from "react-toastify";
 
 interface ChatListProps {
   user: string;
   onSelectChat: (chat: Chat) => void;
   selectedChat: Chat | null;
+  chats: Chat[];
+  setChatList: React.Dispatch<React.SetStateAction<Chat[]>>;
 }
 
-function ChatList({ user, onSelectChat, selectedChat }: ChatListProps) {
-  const navigate = useNavigate();
-  const { data, error, loading } = useData<Chat[]>("/messages/user/chats");
-
-  useEffect(() => {
-    if (error && error.status === 403) {
-      toast.warn("Please login to access the chat");
-      navigate("/auth/login");
-    }
-  }, [error, navigate]);
-
-  if (error)
-    return <p className="text-center">A network error was encountered</p>;
-  if (loading) return <p className="block m-auto text-center">Loading...</p>;
-  if (data?.length === 0) {
+function ChatList({
+  user,
+  onSelectChat,
+  selectedChat,
+  chats,
+  setChatList,
+}: ChatListProps) {
+  if (chats?.length === 0) {
     return (
       <p className="text-center">
         Select a user from the list to start messaging!
@@ -35,8 +26,8 @@ function ChatList({ user, onSelectChat, selectedChat }: ChatListProps) {
 
   return (
     <div className="min-w-80">
-      {data &&
-        data.map((chat) => {
+      {chats &&
+        chats.map((chat) => {
           const filteredUsers = chat.users.filter(
             (chatUser) => chatUser._id !== user
           );
