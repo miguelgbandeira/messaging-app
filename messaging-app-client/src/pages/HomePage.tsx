@@ -10,8 +10,8 @@ import { SocketContext } from "../context/SocketContext";
 import { useFetchChats } from "../hooks/useFetchChats";
 import { useFetchMessages } from "../hooks/useFetchMessages";
 import { toast } from "react-toastify";
-
 function HomePage() {
+  const notificationSound = new Audio("/notification.mp3");
   const { user } = useOutletContext();
   const { socket } = useContext(SocketContext);
   const navigate = useNavigate();
@@ -36,6 +36,7 @@ function HomePage() {
     socket?.on("newMessage", (message: Message) => {
       setMessages((prevData) => [...prevData, message]);
       updateLastMessage(message);
+      notificationSound.play();
     });
 
     return () => {
