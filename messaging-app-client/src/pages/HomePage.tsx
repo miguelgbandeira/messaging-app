@@ -7,10 +7,8 @@ import Header from "../components/Header";
 import UserList from "../components/UserList";
 import { Message } from "../models/message";
 import { SocketContext } from "../context/SocketContext";
-
-interface FetchDataError extends Error {
-  status?: number;
-}
+import { useFetchChats } from "../hooks/useFetchChats";
+import { useFetchMessages } from "../hooks/useFetchMessages";
 
 function HomePage() {
   const { user } = useOutletContext();
@@ -18,75 +16,19 @@ function HomePage() {
   const [selectedChat, setSelectedChat] = useState<Chat | null>(null);
   const [selectedUser, setSelectedUser] = useState<string | null>(null);
   const [tabSelected, setTabSelected] = useState<string>("Chats");
-  const [error, setError] = useState<FetchDataError | null>(null);
-  const [loading, setLoading] = useState<boolean>(false);
-  const [messages, setMessages] = useState<Message[]>([]);
-  const [chatList, setChatList] = useState<Chat[]>([]);
 
-  useEffect(() => {
-    setLoading(true);
-    const fetchData = async () => {
-      try {
-        const token = localStorage.getItem("token");
-        const response = await fetch(
-          `http://localhost:4000/messages/user/chats`,
-          {
-            mode: "cors",
-            headers: {
-              "Content-Type": "application/json",
-              authorization: `Bearer ${token}`,
-            },
-          }
-        );
-
-        if (!response.ok) {
-          const error = new Error("Server error") as FetchDataError;
-          error.status = response.status;
-          throw error;
-        }
-
-        const data = await response.json();
-        setChatList(data);
-      } catch (error) {
-        setError(error as FetchDataError);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchData();
-  }, []);
-
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const token = localStorage.getItem("token");
-        const response = await fetch(
-          `http://localhost:4000/messages/${selectedChat?._id}`,
-          {
-            mode: "cors",
-            headers: {
-              "Content-Type": "application/json",
-              authorization: `Bearer ${token}`,
-            },
-          }
-        );
-
-        if (!response.ok) {
-          const error = new Error("Server error") as FetchDataError;
-          error.status = response.status;
-          throw error;
-        }
-
-        const data = await response.json();
-        setMessages(data);
-      } catch (error) {
-        setError(error as FetchDataError);
-      }
-    };
-
-    if (selectedChat) fetchData();
-  }, [selectedChat]);
+  const {
+    chatList,
+    error: chatError,
+    loading: chatLoading,
+    setChatList,
+  } = useFetchChats();
+  const {
+    messages,
+    error: messagesError,
+    loading: messagesLoading,
+    setMessages,
+  } = useFetchMessages(selectedChat);
 
   useEffect(() => {
     socket?.on("newMessage", (message: Message) => {
@@ -121,15 +63,16 @@ function HomePage() {
 
   const updateLastMessage = useCallback(
     (message: Message) => {
-      const chats = chatList.map((chat) => {
-        if (chat._id === message.chatId) {
-          chat.last_message = message;
-        }
-        return chat;
-      });
-      setChatList(chats);
+      setChatList((chats) =>
+        chats.map((chat) => {
+          if (chat._id === message.chatId) {
+            return { ...chat, last_message: message };
+          }
+          return chat;
+        })
+      );
     },
-    [chatList]
+    [setChatList]
   );
 
   return (
@@ -144,26 +87,40 @@ function HomePage() {
           />
         )}
         {tabSelected === "Chats" && (
-          <ChatList
-            user={user}
-            onSelectChat={handleSelectChat}
-            selectedChat={selectedChat}
-            chats={chatList}
-            setChatList={setChatList}
-          />
+          <>
+            {chatLoading ? (
+              <div className="flex justify-center items-center h-full">
+                <span>Loading chats...</span>
+              </div>
+            ) : (
+              <ChatList
+                user={user}
+                onSelectChat={handleSelectChat}
+                selectedChat={selectedChat}
+                chats={chatList}
+                setChatList={setChatList}
+              />
+            )}
+          </>
         )}
       </div>
       <div className="bg-gray-100 border border-l-0 border-gray-300 w-3/4 max-h-screen min-h-screen flex flex-col">
-        <MessagesContainer
-          key={`${selectedChat?._id}-${selectedUser}`}
-          chatId={selectedChat?._id}
-          sentFrom={user}
-          sentTo={getSentTo}
-          messages={messages}
-          setMessages={setMessages}
-          updateLastMessage={updateLastMessage}
-          selectedChat={selectedChat}
-        />
+        {messagesLoading ? (
+          <div className="flex justify-center items-center h-full">
+            <span>Loading messages...</span>
+          </div>
+        ) : (
+          <MessagesContainer
+            key={`${selectedChat?._id}-${selectedUser}`}
+            chatId={selectedChat?._id}
+            sentFrom={user}
+            sentTo={getSentTo}
+            messages={messages}
+            setMessages={setMessages}
+            updateLastMessage={updateLastMessage}
+            selectedChat={selectedChat}
+          />
+        )}
       </div>
     </div>
   );
