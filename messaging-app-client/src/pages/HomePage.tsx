@@ -1,4 +1,4 @@
-import { useOutletContext } from "react-router-dom";
+import { useNavigate, useOutletContext } from "react-router-dom";
 import ChatList from "../components/ChatList";
 import MessagesContainer from "../components/MessagesContainer";
 import { useCallback, useContext, useEffect, useMemo, useState } from "react";
@@ -9,10 +9,12 @@ import { Message } from "../models/message";
 import { SocketContext } from "../context/SocketContext";
 import { useFetchChats } from "../hooks/useFetchChats";
 import { useFetchMessages } from "../hooks/useFetchMessages";
+import { toast } from "react-toastify";
 
 function HomePage() {
   const { user } = useOutletContext();
   const { socket } = useContext(SocketContext);
+  const navigate = useNavigate();
   const [selectedChat, setSelectedChat] = useState<Chat | null>(null);
   const [selectedUser, setSelectedUser] = useState<string | null>(null);
   const [tabSelected, setTabSelected] = useState<string>("Chats");
@@ -74,6 +76,11 @@ function HomePage() {
     },
     [setChatList]
   );
+
+  if (chatError || messagesError) {
+    toast.warn("You have to be logged in to use the app");
+    navigate("/auth/login");
+  }
 
   return (
     <div className="flex">
