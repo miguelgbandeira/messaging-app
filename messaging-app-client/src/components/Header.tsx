@@ -34,7 +34,7 @@ function Header({ tabSelected, handleClick }) {
         </a>
         <a onClick={handleSignOut}>
           <FontAwesomeIcon
-            className="fa-lg mb-1 text-gray-600"
+            className="fa-lg mb-1 text-gray-600 cursor-pointer"
             icon={faRightFromBracket}
           />
         </a>

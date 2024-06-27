@@ -22,8 +22,6 @@ function MessagesContainer({
   updateLastMessage,
   selectedChat,
 }: MessagesContainerProps) {
-  if (messages.length === 0) return <div>No messages yet.</div>;
-
   return (
     <div className="flex flex-col h-full">
       {!messages && !sentTo && (

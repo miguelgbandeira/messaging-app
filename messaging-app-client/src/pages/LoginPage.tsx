@@ -13,11 +13,12 @@ function LoginPage() {
   const {
     register,
     handleSubmit,
+    setValue,
     setError,
     formState: { errors, isSubmitting },
   } = useForm<FormFields>();
   const navigate = useNavigate();
-  const { user, setUser, fetchLoggedInUser } = useOutletContext();
+  const { user, fetchLoggedInUser } = useOutletContext();
 
   useEffect(() => {
     if (user) {
@@ -53,6 +54,12 @@ function LoginPage() {
     } catch (error) {
       setError("root", { message: (error as Error).message });
     }
+  };
+
+  const handleGuestLogin = () => {
+    setValue("username", "guest");
+    setValue("password", "guest123");
+    handleSubmit(onSubmit)();
   };
 
   return (
@@ -98,10 +105,19 @@ function LoginPage() {
                 <div className="text-red-500">{errors.password.message}</div>
               )}
             </div>
-            <Button
-              disabled={isSubmitting}
-              label={isSubmitting ? "Loading..." : "Submit"}
-            ></Button>
+            <div className="flex flex-col gap-4">
+              <Button
+                disabled={isSubmitting}
+                label={isSubmitting ? "Loading..." : "Submit"}
+                type="submit"
+              ></Button>
+              <Button
+                onClick={handleGuestLogin}
+                label="Login as Guest"
+                color="bg-gray-300"
+                textColor="text-black"
+              ></Button>
+            </div>
             {errors.root && (
               <div className="text-red-500 mt-4">{errors.root.message}</div>
             )}
