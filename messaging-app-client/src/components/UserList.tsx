@@ -8,7 +8,7 @@ import { useNavigate } from "react-router-dom";
 interface UsersProps {
   user: string;
   handleSelectUser: (user: User) => void;
-  selectedUser: string | null;
+  selectedUser: User | null;
 }
 
 function UserList({ user, handleSelectUser, selectedUser }: UsersProps) {
@@ -39,7 +39,9 @@ function UserList({ user, handleSelectUser, selectedUser }: UsersProps) {
                 day: "numeric",
               }
             );
-            const isSelected = selectedUser ? user._id === selectedUser : false;
+            const isSelected = selectedUser?._id
+              ? user._id === selectedUser._id
+              : false;
             return (
               <div
                 className={`${isSelected ? "bg-gray-200" : ""}`}
