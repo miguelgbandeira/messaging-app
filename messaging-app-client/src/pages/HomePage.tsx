@@ -10,13 +10,16 @@ import { SocketContext } from "../context/SocketContext";
 import { useFetchChats } from "../hooks/useFetchChats";
 import { useFetchMessages } from "../hooks/useFetchMessages";
 import { toast } from "react-toastify";
+import { User } from "../models/user";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faArrowLeftLong } from "@fortawesome/free-solid-svg-icons";
 function HomePage() {
   const notificationSound = new Audio("/notification.mp3");
   const { user } = useOutletContext();
   const { socket } = useContext(SocketContext);
   const navigate = useNavigate();
   const [selectedChat, setSelectedChat] = useState<Chat | null>(null);
-  const [selectedUser, setSelectedUser] = useState<string | null>(null);
+  const [selectedUser, setSelectedUser] = useState<User | null>(null);
   const [tabSelected, setTabSelected] = useState<string>("Chats");
 
   const {
@@ -49,7 +52,7 @@ function HomePage() {
     setSelectedUser(null);
   }, []);
 
-  const handleSelectUser = useCallback((user: string) => {
+  const handleSelectUser = useCallback((user: User) => {
     setSelectedUser(user);
     setSelectedChat(null);
   }, []);
@@ -61,7 +64,7 @@ function HomePage() {
       );
       return chatUser ? chatUser._id : null;
     }
-    return selectedUser;
+    return selectedUser?._id;
   }, [selectedChat, selectedUser, user]);
 
   const updateLastMessage = useCallback(
@@ -83,25 +86,41 @@ function HomePage() {
     navigate("/auth/login");
   }
 
+  const getUserFromChat = () => {
+    if (selectedChat) {
+      const chatUser = selectedChat.users.find(
+        (chatUser) => chatUser._id !== user
+      );
+      return chatUser ? chatUser.username : null;
+    }
+    return "";
+  };
+
   return (
     <div className="flex flex-col h-screen">
-      <div className="bg-gray-100 border-b border-gray-300">
-        {/* Header for Small Screens */}
+      <div className="bg-gray-100 border-b border-gray-300 relative">
+        {/* Original Header for Small Screens */}
         <div className="sm:hidden">
           {!selectedChat && !selectedUser && (
             <Header tabSelected={tabSelected} handleClick={setTabSelected} />
           )}
           {(selectedChat || selectedUser) && (
-            <div className="flex justify-start items-center px-4 py-2">
-              <button
-                className="bg-white rounded-lg px-4 py-2 shadow-md"
+            <div className="flex justify-center items-center p-5">
+              <a
+                className="cursor-pointer absolute left-4"
                 onClick={() => {
-                  setSelectedChat(null); // Reset selected chat or user
+                  setSelectedChat(null);
                   setSelectedUser(null);
                 }}
               >
-                Back
-              </button>
+                <FontAwesomeIcon
+                  className="fa-lg cursor-pointer"
+                  icon={faArrowLeftLong}
+                />
+              </a>
+              <h1 className="font-bold text-lg text-center">
+                {getUserFromChat() || selectedUser?.username}
+              </h1>
             </div>
           )}
         </div>
@@ -111,6 +130,7 @@ function HomePage() {
         </div>
       </div>
       <div className="flex flex-1 overflow-hidden">
+        {/* Chat List or User List */}
         <div
           className={`border border-gray-300 w-full sm:w-1/4 ${selectedChat || selectedUser ? "hidden sm:block" : "block"}`}
         >
@@ -139,6 +159,7 @@ function HomePage() {
             </>
           )}
         </div>
+        {/* Messages Container */}
         <div
           className={`bg-gray-100 border-l border-gray-300 w-full sm:w-3/4 ${selectedChat || selectedUser ? "block" : "hidden sm:block"}`}
         >

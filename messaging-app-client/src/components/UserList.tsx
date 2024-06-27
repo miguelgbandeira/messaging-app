@@ -7,7 +7,7 @@ import { useNavigate } from "react-router-dom";
 
 interface UsersProps {
   user: string;
-  handleSelectUser: (userId: string) => void;
+  handleSelectUser: (user: User) => void;
   selectedUser: string | null;
 }
 
@@ -44,7 +44,7 @@ function UserList({ user, handleSelectUser, selectedUser }: UsersProps) {
               <div
                 className={`${isSelected ? "bg-gray-200" : ""}`}
                 key={user._id}
-                onClick={() => handleSelectUser(user._id)}
+                onClick={() => handleSelectUser(user)}
               >
                 <Card
                   username={user.username}
