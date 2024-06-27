@@ -84,51 +84,83 @@ function HomePage() {
   }
 
   return (
-    <div className="flex">
-      <div className="border border-gray-300 w-1/4">
-        <Header tabSelected={tabSelected} handleClick={setTabSelected} />
-        {tabSelected === "Users" && (
-          <UserList
-            handleSelectUser={handleSelectUser}
-            user={user}
-            selectedUser={selectedUser}
-          />
-        )}
-        {tabSelected === "Chats" && (
-          <>
-            {chatLoading ? (
+    <div className="flex flex-col h-screen">
+      <div className="bg-gray-100 border-b border-gray-300">
+        {/* Header for Small Screens */}
+        <div className="sm:hidden">
+          {!selectedChat && !selectedUser && (
+            <Header tabSelected={tabSelected} handleClick={setTabSelected} />
+          )}
+          {(selectedChat || selectedUser) && (
+            <div className="flex justify-start items-center px-4 py-2">
+              <button
+                className="bg-white rounded-lg px-4 py-2 shadow-md"
+                onClick={() => {
+                  setSelectedChat(null); // Reset selected chat or user
+                  setSelectedUser(null);
+                }}
+              >
+                Back
+              </button>
+            </div>
+          )}
+        </div>
+        {/* Original Header for Large Screens */}
+        <div className="hidden sm:block border border-gray-300 w-1/4">
+          <Header tabSelected={tabSelected} handleClick={setTabSelected} />
+        </div>
+      </div>
+      <div className="flex flex-1 overflow-hidden">
+        <div
+          className={`border border-gray-300 w-full sm:w-1/4 ${selectedChat || selectedUser ? "hidden sm:block" : "block"}`}
+        >
+          {tabSelected === "Users" && (
+            <UserList
+              handleSelectUser={handleSelectUser}
+              user={user}
+              selectedUser={selectedUser}
+            />
+          )}
+          {tabSelected === "Chats" && (
+            <>
+              {chatLoading ? (
+                <div className="flex justify-center items-center h-full">
+                  <span>Loading chats...</span>
+                </div>
+              ) : (
+                <ChatList
+                  user={user}
+                  onSelectChat={handleSelectChat}
+                  selectedChat={selectedChat}
+                  chats={chatList}
+                  setChatList={setChatList}
+                />
+              )}
+            </>
+          )}
+        </div>
+        <div
+          className={`bg-gray-100 border-l border-gray-300 w-full sm:w-3/4 ${selectedChat || selectedUser ? "block" : "hidden sm:block"}`}
+        >
+          {selectedChat || selectedUser ? (
+            messagesLoading ? (
               <div className="flex justify-center items-center h-full">
-                <span>Loading chats...</span>
+                <span>Loading messages...</span>
               </div>
             ) : (
-              <ChatList
-                user={user}
-                onSelectChat={handleSelectChat}
+              <MessagesContainer
+                key={`${selectedChat?._id}-${selectedUser}`}
+                chatId={selectedChat?._id}
+                sentFrom={user}
+                sentTo={getSentTo}
+                messages={messages}
+                setMessages={setMessages}
+                updateLastMessage={updateLastMessage}
                 selectedChat={selectedChat}
-                chats={chatList}
-                setChatList={setChatList}
               />
-            )}
-          </>
-        )}
-      </div>
-      <div className="bg-gray-100 border border-l-0 border-gray-300 w-3/4 max-h-screen min-h-screen flex flex-col">
-        {messagesLoading ? (
-          <div className="flex justify-center items-center h-full">
-            <span>Loading messages...</span>
-          </div>
-        ) : (
-          <MessagesContainer
-            key={`${selectedChat?._id}-${selectedUser}`}
-            chatId={selectedChat?._id}
-            sentFrom={user}
-            sentTo={getSentTo}
-            messages={messages}
-            setMessages={setMessages}
-            updateLastMessage={updateLastMessage}
-            selectedChat={selectedChat}
-          />
-        )}
+            )
+          ) : null}
+        </div>
       </div>
     </div>
   );
