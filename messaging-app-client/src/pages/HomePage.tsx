@@ -37,7 +37,9 @@ function HomePage() {
 
   useEffect(() => {
     socket?.on("newMessage", (message: Message) => {
-      setMessages((prevData) => [...prevData, message]);
+      if (selectedChat?._id === message.chatId) {
+        setMessages((prevData) => [...prevData, message]);
+      }
       updateLastMessage(message);
       notificationSound.play();
     });
