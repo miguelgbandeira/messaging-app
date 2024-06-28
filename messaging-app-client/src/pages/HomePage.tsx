@@ -69,14 +69,24 @@ function HomePage() {
 
   const updateLastMessage = useCallback(
     (message: Message) => {
-      setChatList((chats) =>
-        chats.map((chat) => {
+      setChatList((chats) => {
+        const updatedChats = chats.map((chat) => {
           if (chat._id === message.chatId) {
             return { ...chat, last_message: message };
           }
           return chat;
-        })
-      );
+        });
+
+        const chatWithNewMessage = updatedChats.find(
+          (chat) => chat._id === message.chatId
+        );
+        if (!chatWithNewMessage) return updatedChats;
+
+        const filteredChats = updatedChats.filter(
+          (chat) => chat._id !== message.chatId
+        );
+        return [chatWithNewMessage, ...filteredChats];
+      });
     },
     [setChatList]
   );
