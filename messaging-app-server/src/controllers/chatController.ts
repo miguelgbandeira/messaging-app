@@ -63,9 +63,34 @@ export const sendMessage: RequestHandler<
 export const getUserChats: RequestHandler = async (req, res) => {
   const user = req.user._id;
 
-  const chats = await Chat.find({ users: user })
-    .populate("last_message")
-    .populate("users", "username");
+  const chats = await Chat.aggregate([
+    { $match: { users: user } },
+    {
+      $lookup: {
+        from: "messages",
+        localField: "last_message",
+        foreignField: "_id",
+        as: "last_message",
+      },
+    },
+    { $unwind: "$last_message" },
+    {
+      $lookup: {
+        from: "users",
+        localField: "users",
+        foreignField: "_id",
+        as: "users",
+      },
+    },
+    {
+      $project: {
+        _id: 1,
+        users: { _id: 1, username: 1 },
+        last_message: 1,
+      },
+    },
+    { $sort: { "last_message.timestamp": -1 } },
+  ]);
 
   if (!chats) {
     throw createHttpError(404, "Chats not found");
@@ -98,6 +123,30 @@ export const getAllMessagesFromChat: RequestHandler = async (
 
     const messages = await Message.find({ chatId: chatId });
     res.status(200).json(messages);
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const getChatById: RequestHandler = async (req, res, next) => {
+  try {
+    const chatId = req.params.chatId;
+
+    if (!mongoose.Types.ObjectId.isValid(chatId)) {
+      throw createHttpError(404, "Chat not found");
+    }
+
+    const chat = await Chat.findById(chatId);
+
+    if (!chat) {
+      throw createHttpError(404, "Chat not found");
+    }
+
+    if (!chat.users.includes(req.user._id)) {
+      throw createHttpError(403, "Not authorized");
+    }
+
+    res.status(200).json(chat);
   } catch (error) {
     next(error);
   }
