@@ -71,8 +71,8 @@ function RegisterPage() {
                 {...register("username", {
                   required: "Username is required",
                   maxLength: {
-                    value: 100,
-                    message: "Username can't have more than 100 characters",
+                    value: 10,
+                    message: "Username can't have more than 10 characters",
                   },
                 })}
                 type="text"
@@ -88,7 +88,17 @@ function RegisterPage() {
                 Password
               </label>
               <input
-                {...register("password", { required: "Password is required" })}
+                {...register("password", {
+                  required: "Password is required",
+                  maxLength: {
+                    value: 30,
+                    message: "Password can't have more than 30 characters",
+                  },
+                  minLength: {
+                    value: 8,
+                    message: "Password must have at least 8 characters",
+                  },
+                })}
                 type="password"
                 id="password"
                 className="border border-indigo-500 rounded-md px-2 py-1 focus:border-2"
@@ -98,6 +108,7 @@ function RegisterPage() {
               )}
             </div>
             <Button
+              type="submit"
               disabled={isSubmitting}
               label={isSubmitting ? "Loading..." : "Register"}
             ></Button>

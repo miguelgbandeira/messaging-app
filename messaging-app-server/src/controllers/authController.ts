@@ -6,6 +6,19 @@ import bcrypt from "bcrypt";
 
 export const createUser: RequestHandler = async (req, res, next) => {
   const { username, password } = req.body;
+
+  if (username.length > 10) {
+    return res
+      .status(400)
+      .json({ error: "Username must not exceed 10 characters" });
+  }
+
+  if (password.length < 8 || password.length > 30) {
+    return res
+      .status(400)
+      .json({ error: "Password must be between 8 and 30 characters long" });
+  }
+
   try {
     const existingUser = await UserModel.findOne({ username: username });
     if (existingUser) {
