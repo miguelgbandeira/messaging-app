@@ -12,9 +12,11 @@ function Card({ username, subText }: CardProps) {
       <div className="bg-gray-300 rounded-full flex justify-center items-center w-16 h-16">
         <FontAwesomeIcon className="fa-3x text-white" icon={faUser} />
       </div>
-      <div className="flex flex-col space-y-1">
+      <div className="flex flex-col space-y-1 w-64">
         <span className="font-bold text-lg">{username}</span>
-        <span className="text-gray-500 font-extralight">{subText}</span>
+        <span className="truncate text-gray-500 font-extralight">
+          {subText}
+        </span>
       </div>
     </div>
   );

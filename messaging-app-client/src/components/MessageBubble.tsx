@@ -31,7 +31,7 @@ function MessageBubble({ message, user, color }: MessagesBubbleProps) {
       className={`rounded-full px-5 py-3 max-w-sm ${color}`}
       key={message._id}
     >
-      <span>{message.message}</span>
+      <div className="break-words">{message.message}</div>
       <div className="flex justify-between font-extralight text-[8px] mt-1">
         <span className="mr-2">{formatDay(message.timestamp)}</span>
         <span>{formatHour(message.timestamp)}</span>
