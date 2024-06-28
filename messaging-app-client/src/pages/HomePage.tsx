@@ -54,10 +54,16 @@ function HomePage() {
     setSelectedUser(null);
   }, []);
 
-  const handleSelectUser = useCallback((user: User) => {
-    setSelectedUser(user);
-    setSelectedChat(null);
-  }, []);
+  const handleSelectUser = useCallback(
+    (user: User) => {
+      setSelectedUser(user);
+      const foundChat = chatList.find((chat) =>
+        chat.users.some((u) => u._id === user._id)
+      );
+      setSelectedChat(foundChat || null);
+    },
+    [chatList, setSelectedUser]
+  );
 
   const getSentTo = useMemo(() => {
     if (selectedChat) {
