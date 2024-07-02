@@ -26,7 +26,7 @@ function UserList({ user, handleSelectUser, selectedUser }: UsersProps) {
   if (loading) return <p>Loading...</p>;
 
   return (
-    <div className="h-full overflow-y-auto border border-gray-300">
+    <div className="h-full overflow-y-auto">
       {data &&
         data
           .filter((dataUser) => dataUser._id !== user)

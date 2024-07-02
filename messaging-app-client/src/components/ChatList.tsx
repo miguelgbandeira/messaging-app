@@ -25,7 +25,7 @@ function ChatList({
   }
 
   return (
-    <div className="min-w-80">
+    <div className="min-w-80 h-full overflow-y-auto">
       {chats &&
         chats.map((chat) => {
           const filteredUsers = chat.users.filter(
