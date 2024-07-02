@@ -13,6 +13,7 @@ import { toast } from "react-toastify";
 import { User } from "../models/user";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowLeftLong } from "@fortawesome/free-solid-svg-icons";
+
 function HomePage() {
   const notificationSound = new Audio("/notification.mp3");
   const { user } = useOutletContext();
@@ -196,6 +197,7 @@ function HomePage() {
                 setMessages={setMessages}
                 updateLastMessage={updateLastMessage}
                 selectedChat={selectedChat}
+                setSelectedChat={setSelectedChat}
               />
             )
           ) : null}

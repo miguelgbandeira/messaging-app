@@ -11,6 +11,7 @@ interface MessagesContainerProps {
   setMessages: React.Dispatch<React.SetStateAction<Message[]>>;
   updateLastMessage: (message: Message) => void;
   selectedChat: Chat | null;
+  setSelectedChat: React.Dispatch<React.SetStateAction<Chat | null>>;
 }
 
 function MessagesContainer({
@@ -21,6 +22,7 @@ function MessagesContainer({
   setMessages,
   updateLastMessage,
   selectedChat,
+  setSelectedChat,
 }: MessagesContainerProps) {
   return (
     <div className="flex flex-col h-full">
@@ -59,6 +61,7 @@ function MessagesContainer({
             sentFrom={sentFrom}
             sentTo={sentTo}
             updateLastMessage={updateLastMessage}
+            setSelectedChat={setSelectedChat}
           />
         )}
       </div>

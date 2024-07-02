@@ -2,12 +2,14 @@ import { ChangeEvent, FormEvent, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCircleRight } from "@fortawesome/free-solid-svg-icons";
 import { Message } from "../models/message";
+import { Chat } from "../models/chat";
 
 interface MessagesAreaProps {
   sentFrom: string;
   sentTo: string | undefined | null;
   setData: React.Dispatch<React.SetStateAction<Message[]>>;
   updateLastMessage: (message: Message) => void;
+  setSelectedChat: React.Dispatch<React.SetStateAction<Chat | null>>;
 }
 
 function MessageArea({
@@ -15,6 +17,7 @@ function MessageArea({
   sentTo,
   setData,
   updateLastMessage,
+  setSelectedChat,
 }: MessagesAreaProps) {
   const [message, setMessage] = useState("");
 
@@ -52,6 +55,20 @@ function MessageArea({
       setMessage("");
       setData((prevData: Message) => [...prevData, responseMessage]);
       updateLastMessage(responseMessage);
+      const responseChat = await fetch(
+        `http://localhost:4000/messages/chats/${responseMessage.chatId}`,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      if (!responseChat.ok) {
+        throw new Error("Network response was not ok");
+      }
+      const chat = await responseChat.json();
+      setSelectedChat(chat);
     } catch (error) {
       console.error("Error sending message:", error);
     }
