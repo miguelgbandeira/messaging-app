@@ -10,6 +10,7 @@ interface MessagesAreaProps {
   setData: React.Dispatch<React.SetStateAction<Message[]>>;
   updateLastMessage: (message: Message) => void;
   setSelectedChat: React.Dispatch<React.SetStateAction<Chat | null>>;
+  addChatToChatList: (chat: Chat) => void;
 }
 
 function MessageArea({
@@ -18,6 +19,7 @@ function MessageArea({
   setData,
   updateLastMessage,
   setSelectedChat,
+  addChatToChatList,
 }: MessagesAreaProps) {
   const [message, setMessage] = useState("");
 
@@ -68,6 +70,7 @@ function MessageArea({
         throw new Error("Network response was not ok");
       }
       const chat = await responseChat.json();
+      addChatToChatList(chat);
       setSelectedChat(chat);
     } catch (error) {
       console.error("Error sending message:", error);

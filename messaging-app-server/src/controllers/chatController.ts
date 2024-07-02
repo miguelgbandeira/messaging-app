@@ -136,13 +136,13 @@ export const getChatById: RequestHandler = async (req, res, next) => {
       throw createHttpError(404, "Chat not found");
     }
 
-    const chat = await Chat.findById(chatId);
+    const chat = await Chat.findById(chatId).populate("users");
 
     if (!chat) {
       throw createHttpError(404, "Chat not found");
     }
 
-    if (!chat.users.includes(req.user._id)) {
+    if (!chat.users.some((userId) => userId.equals(req.user._id))) {
       throw createHttpError(403, "Not authorized");
     }
 

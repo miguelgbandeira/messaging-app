@@ -58,6 +58,8 @@ function HomePage() {
   const handleSelectUser = useCallback(
     (user: User) => {
       setSelectedUser(user);
+      console.log(chatList);
+      console.log(user);
       const foundChat = chatList.find((chat) =>
         chat.users.some((u) => u._id === user._id)
       );
@@ -113,6 +115,10 @@ function HomePage() {
       return chatUser ? chatUser.username : null;
     }
     return "";
+  };
+
+  const addChatToChatList = (chat: Chat) => {
+    setChatList((prevChats) => [chat, ...prevChats]);
   };
 
   return (
@@ -198,6 +204,7 @@ function HomePage() {
                 updateLastMessage={updateLastMessage}
                 selectedChat={selectedChat}
                 setSelectedChat={setSelectedChat}
+                addChatToChatList={addChatToChatList}
               />
             )
           ) : null}
