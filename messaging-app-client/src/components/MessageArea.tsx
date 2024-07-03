@@ -5,7 +5,7 @@ import { Message } from "../models/message";
 import { Chat } from "../models/chat";
 
 interface MessagesAreaProps {
-  sentFrom: string;
+  sentFrom: string | null;
   sentTo: string | undefined | null;
   setData: React.Dispatch<React.SetStateAction<Message[]>>;
   updateLastMessage: (message: Message) => void;
@@ -55,7 +55,7 @@ function MessageArea({
       const responseMessage = await response.json();
 
       setMessage("");
-      setData((prevData: Message) => [...prevData, responseMessage]);
+      setData((prevData: Message[]) => [...prevData, responseMessage]);
       updateLastMessage(responseMessage);
       const responseChat = await fetch(
         `http://localhost:4000/messages/chats/${responseMessage.chatId}`,

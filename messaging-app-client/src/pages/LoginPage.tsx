@@ -3,6 +3,7 @@ import Button from "../components/Button";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { useNavigate, useOutletContext } from "react-router-dom";
 import { toast } from "react-toastify";
+import { AuthContextType } from "../App";
 
 type FormFields = {
   username: string;
@@ -18,7 +19,7 @@ function LoginPage() {
     formState: { errors, isSubmitting },
   } = useForm<FormFields>();
   const navigate = useNavigate();
-  const { user, fetchLoggedInUser } = useOutletContext();
+  const { user, fetchLoggedInUser } = useOutletContext<AuthContextType>();
 
   useEffect(() => {
     if (user) {

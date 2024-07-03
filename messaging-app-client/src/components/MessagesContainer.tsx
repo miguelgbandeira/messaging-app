@@ -5,7 +5,7 @@ import { Chat } from "../models/chat";
 
 interface MessagesContainerProps {
   chatId: string | undefined;
-  sentFrom: string;
+  sentFrom: string | null;
   sentTo: string | undefined | null;
   messages: Message[];
   setMessages: React.Dispatch<React.SetStateAction<Message[]>>;

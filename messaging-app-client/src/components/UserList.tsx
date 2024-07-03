@@ -6,7 +6,7 @@ import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 
 interface UsersProps {
-  user: string;
+  user: string | null;
   handleSelectUser: (user: User) => void;
   selectedUser: User | null;
 }

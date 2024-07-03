@@ -3,6 +3,7 @@ import Button from "../components/Button";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { useNavigate, useOutletContext } from "react-router-dom";
 import { toast } from "react-toastify";
+import { AuthContextType } from "../App";
 
 type FormFields = {
   username: string;
@@ -17,7 +18,7 @@ function RegisterPage() {
     formState: { errors, isSubmitting },
   } = useForm<FormFields>();
   const navigate = useNavigate();
-  const { user } = useOutletContext();
+  const { user } = useOutletContext<AuthContextType>();
 
   useEffect(() => {
     if (user) {

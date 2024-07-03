@@ -2,11 +2,11 @@ import { Message } from "../models/message";
 
 interface MessagesBubbleProps {
   message: Message;
-  user: string;
+  user: string | null;
   color: string;
 }
 
-function MessageBubble({ message, user, color }: MessagesBubbleProps) {
+function MessageBubble({ message, color }: MessagesBubbleProps) {
   function formatDay(timestampString: string) {
     const timestamp = new Date(timestampString);
 

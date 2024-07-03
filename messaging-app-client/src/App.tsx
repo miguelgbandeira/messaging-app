@@ -5,6 +5,12 @@ import "react-toastify/dist/ReactToastify.css";
 import { User } from "./models/user";
 import { SocketContextProvider } from "./context/SocketContext";
 
+export type AuthContextType = {
+  user: string | null;
+  setUser: React.Dispatch<React.SetStateAction<User | null>>;
+  fetchLoggedInUser: () => Promise<void>;
+};
+
 function App() {
   const [user, setUser] = useState<User | null>(null);
 

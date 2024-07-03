@@ -2,9 +2,10 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faRightFromBracket } from "@fortawesome/free-solid-svg-icons";
 import { toast } from "react-toastify";
 import { useNavigate, useOutletContext } from "react-router-dom";
+import { AuthContextType } from "../App";
 
 function Header({ tabSelected, handleClick }) {
-  const { setUser } = useOutletContext();
+  const { setUser } = useOutletContext<AuthContextType>();
   const navigate = useNavigate();
   function handleSignOut() {
     try {

@@ -2,20 +2,13 @@ import { Chat } from "../models/chat";
 import Card from "./Card";
 
 interface ChatListProps {
-  user: string;
+  user: string | null;
   onSelectChat: (chat: Chat) => void;
   selectedChat: Chat | null;
   chats: Chat[];
-  setChatList: React.Dispatch<React.SetStateAction<Chat[]>>;
 }
 
-function ChatList({
-  user,
-  onSelectChat,
-  selectedChat,
-  chats,
-  setChatList,
-}: ChatListProps) {
+function ChatList({ user, onSelectChat, selectedChat, chats }: ChatListProps) {
   if (chats?.length === 0) {
     return (
       <p className="text-center">
